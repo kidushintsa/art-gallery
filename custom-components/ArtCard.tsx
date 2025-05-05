@@ -1,7 +1,12 @@
 import Image from "next/image";
 import art from "@/public/images/img1.jpg";
 import { Plus, ShoppingCart } from "lucide-react";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const ArtCard = () => {
   return (
@@ -14,6 +19,7 @@ const ArtCard = () => {
           </div>
         </DialogTrigger>
         <DialogContent className="p-0 max-w-4xl">
+          <DialogTitle>Are you absolutely sure?</DialogTitle>
           <div className="relative w-full h-[90vh]">
             <Image
               src={art}

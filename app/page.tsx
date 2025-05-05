@@ -1,13 +1,21 @@
-import ArtCard from "@/custom-components/ArtCard";
+// import ArtCard from "@/custom-components/ArtCard";
+
+import CusNavLink from "@/custom-components/CusNavLink";
+import UserSearchBox from "@/custom-components/UserSearchBox";
+import { CircleUserRound, ShoppingBag } from "lucide-react";
 
 export default function Home() {
-  const array = [1, 2, 3, 4, 5, 6];
-
   return (
-    <div className="grid grid-cols-3 gap-3 p-3">
-      {array.map((c) => (
-        <ArtCard key={c} />
-      ))}
+    <div className="flex border items-center">
+      <div className="border">
+        <CusNavLink linkName="Home" href="Dashboard" />
+        <CusNavLink linkName="About Us" href="Dashboard" />
+      </div>
+      <UserSearchBox />
+      <div className="border p-1 flex">
+        <ShoppingBag size={28} strokeWidth={1.75} className="border" />
+        <CircleUserRound size={28} strokeWidth={1.75} className="border" />
+      </div>
     </div>
   );
 }
