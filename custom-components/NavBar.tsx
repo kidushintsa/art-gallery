@@ -6,20 +6,16 @@ import { CircleUserRound, ShoppingBag } from "lucide-react";
 
 const NavBar = () => {
   return (
-    <div className="grid grid-cols-6 border items-center p-5 bg-orange-100">
-      <div className="col-span-5 col-start-2 border flex items-center">
-        <div className="border flex-none">
-          <NavLink linkName="home" href="/home" />
+    <div className="grid grid-cols-6 items-center p-5">
+      <div className="col-span-5 col-start-2 flex items-center">
+        <div className="flex-none">
+          <NavLink linkName="home" href="/" />
           <NavLink linkName="about Us" href="/about" />
         </div>
         <UserSearchBox />
-        <div className="border p-1 flex">
-          <ShoppingBag size={28} strokeWidth={1.75} className="border" />
-          <CircleUserRound
-            size={28}
-            strokeWidth={1.75}
-            className="border ms-3"
-          />
+        <div className="p-1 flex">
+          <ShoppingBag size={28} strokeWidth={1.75} className="" />
+          <CircleUserRound size={28} strokeWidth={1.75} className="ms-3" />
         </div>
       </div>
     </div>
