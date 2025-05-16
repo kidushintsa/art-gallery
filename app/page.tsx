@@ -1,5 +1,7 @@
+// import AdminNavLink from "@/custom-components/AdminNavLink";
 import ArtCardGrid from "@/custom-components/ArtCardGrid";
 import Hero from "@/custom-components/Hero";
+// import { NavLinkData } from "@/data/NavData";
 export default function Home() {
   return (
     <>
@@ -9,6 +11,13 @@ export default function Home() {
         <h1>Leading Online Gallery</h1>
       </header>
       <ArtCardGrid />
+      {/* <div className="flex flex-col">
+        {NavLinkData.map(({ name, href, children }) => (
+          <AdminNavLink key={name} name={name} href={href}>
+            {children}
+          </AdminNavLink>
+        ))}
+      </div> */}
     </>
   );
 }
