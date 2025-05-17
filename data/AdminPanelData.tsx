@@ -5,13 +5,13 @@ import {
   Box,
   Calendar,
   ChartNoAxesCombined,
-  Fingerprint,
   FolderKanban,
   Mail,
   MessageCircleQuestion,
   MessageSquare,
   PhoneCall,
   PlaneLanding,
+  ShieldHalf,
   ShoppingBasket,
   ShoppingCart,
   SquareUser,
@@ -86,7 +86,7 @@ export const PagesPanelData: Navlink[] = [
   {
     name: "Authentication",
     href: "",
-    children: <Fingerprint />,
+    children: <ShieldHalf />,
   },
   {
     name: "Error 404",

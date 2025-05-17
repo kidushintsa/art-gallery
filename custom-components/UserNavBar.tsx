@@ -1,16 +1,16 @@
 "use client";
 import React from "react";
-import NavLink from "./NavLink";
+import UserNavBarLink from "./UserNavBarLink";
 import UserSearchBox from "./UserSearchBox";
 import { CircleUserRound, ShoppingBag } from "lucide-react";
 
-const NavBar = () => {
+const UserNavBar = () => {
   return (
     <div className="grid grid-cols-6 items-center p-5">
       <div className="col-span-5 col-start-2 flex items-center">
         <div className="flex-none">
-          <NavLink linkName="home" href="/" />
-          <NavLink linkName="about Us" href="/about" />
+          <UserNavBarLink linkName="home" href="/" />
+          <UserNavBarLink linkName="about Us" href="/about" />
         </div>
         <UserSearchBox />
         <div className="p-1 flex">
@@ -22,4 +22,4 @@ const NavBar = () => {
   );
 };
 
-export default NavBar;
+export default UserNavBar;

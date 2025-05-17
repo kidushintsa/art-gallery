@@ -1,4 +1,5 @@
 import NavLink from "@/custom-components/AdminNavLink";
+import AdminPanel from "@/custom-components/AdminPanel";
 // import ArtCardGrid from "@/custom-components/ArtCardGrid";
 // import Hero from "@/custom-components/Hero";
 import { ArtistNavLinkData } from "@/data/ArtistNavData";
@@ -18,6 +19,7 @@ export default function Home() {
           </AdminNavLink>
         ))}
       </div> */}
+      <AdminPanel />
     </>
   );
 }

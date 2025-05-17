@@ -4,7 +4,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 
-const NavLink = ({ linkName, href }: { linkName: string; href: string }) => {
+const UserNavBarLink = ({
+  linkName,
+  href,
+}: {
+  linkName: string;
+  href: string;
+}) => {
   const pathname = usePathname();
 
   const isActive = pathname === href;
@@ -21,4 +27,4 @@ const NavLink = ({ linkName, href }: { linkName: string; href: string }) => {
   );
 };
 
-export default NavLink;
+export default UserNavBarLink;
