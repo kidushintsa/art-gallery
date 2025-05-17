@@ -1,4 +1,4 @@
-import { AdminNavlink } from "@/entities/adminNavlink";
+import { Navlink } from "@/entities/Navlink";
 import {
   ArrowLeftRight,
   EllipsisVertical,
@@ -9,7 +9,7 @@ import {
   Settings,
 } from "lucide-react";
 
-export const NavLinkData: AdminNavlink[] = [
+export const ArtistNavLinkData: Navlink[] = [
   {
     name: "Home",
     href: "",
