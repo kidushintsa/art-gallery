@@ -1,8 +1,11 @@
-import NavLink from "@/custom-components/AdminNavLink";
-import AdminPanel from "@/custom-components/AdminPanel";
+// import NavLink from "@/custom-components/AdminNavLink";
+// import AdminPanel from "@/custom-components/AdminPanel";
 // import ArtCardGrid from "@/custom-components/ArtCardGrid";
 // import Hero from "@/custom-components/Hero";
-import { ArtistNavLinkData } from "@/data/ArtistNavData";
+
+import AdminInfoBar from "@/custom-components/admin/AdminInfoBar";
+
+// import { ArtistNavLinkData } from "@/data/ArtistNavData";
 export default function Home() {
   return (
     <>
@@ -19,7 +22,8 @@ export default function Home() {
           </AdminNavLink>
         ))}
       </div> */}
-      <AdminPanel />
+      {/* <AdminPanel /> */}
+      <AdminInfoBar />
     </>
   );
 }
