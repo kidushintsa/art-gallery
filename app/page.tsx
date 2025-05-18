@@ -4,11 +4,14 @@
 // import Hero from "@/custom-components/Hero";
 
 import AdminInfoBar from "@/custom-components/admin/AdminInfoBar";
+import AdminPanel from "@/custom-components/admin/AdminPanel";
+
+// import AdminInfoBar from "@/custom-components/admin/AdminInfoBar";
 
 // import { ArtistNavLinkData } from "@/data/ArtistNavData";
 export default function Home() {
   return (
-    <>
+    <div className="flex">
       {/* <Hero />console.log('Rendering Home component');
       <header className="ps-3 pt-4 font-semibold font-serif">
         <h1>Discover Art You Love From the Local</h1>
@@ -22,8 +25,8 @@ export default function Home() {
           </AdminNavLink>
         ))}
       </div> */}
-      {/* <AdminPanel /> */}
+      <AdminPanel />
       <AdminInfoBar />
-    </>
+    </div>
   );
 }
