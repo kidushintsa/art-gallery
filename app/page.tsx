@@ -5,6 +5,7 @@
 
 import AdminInfoBar from "@/custom-components/admin/AdminInfoBar";
 import AdminPanel from "@/custom-components/admin/AdminPanel";
+import ProfitBox from "@/custom-components/admin/ProfitBox";
 
 // import AdminInfoBar from "@/custom-components/admin/AdminInfoBar";
 
@@ -27,6 +28,18 @@ export default function Home() {
       </div> */}
       <AdminPanel />
       <AdminInfoBar />
+      <ProfitBox
+        header="Monthly Net Profit"
+        desc="Total profit gained"
+        rate="+4.33%"
+        amount={900000}
+      />
+      <ProfitBox
+        header="Revenue per visitor"
+        desc="Average income per visitors in your website"
+        rate="-1.03%"
+        amount={900000}
+      />
     </div>
   );
 }
