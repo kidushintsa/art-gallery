@@ -9,7 +9,7 @@ interface ProfitBox {
 
 const ProfitBox = ({ header, desc, amount, rate }: ProfitBox) => {
   return (
-    <div className="border p-5 w-[25%] h-fit">
+    <div className="border p-5 h-fit bg-gray-50">
       <header className="">
         <h1 className="text-xl font-semibold">{header}</h1>
         <p className="font-extralight text-gray-400 text-sm">{desc}</p>

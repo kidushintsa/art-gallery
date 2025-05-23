@@ -9,7 +9,12 @@ import AdminNavLink from "./AdminNavLink";
 import PanalSectionHeader from "./PanalSectionHeader";
 const AdminPanel = () => {
   return (
-    <div className="border ps-5 w-[25%]">
+    <div className="border ps-5 w-[25%] bg-gray-50">
+      <header className="p-3">
+        <h1 className="text-4xl">
+          <span className="text-green-400">ADMIN</span> Panel
+        </h1>
+      </header>
       <section className="flex flex-col mb-3 border">
         <PanalSectionHeader title="HOMEPAGE" />
         {HomePanelData.map(({ name, href, children }) => (
