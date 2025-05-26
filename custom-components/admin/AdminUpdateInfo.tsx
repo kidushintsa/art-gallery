@@ -9,7 +9,7 @@ const AdminUpdateInfo = ({
 }) => {
   return (
     <div className="">
-      <h1 className="font-extralight text-gray-400 text-sm pb-4">{header}</h1>
+      <h1 className="font-extralight text-gray-500 text-sm pb-4">{header}</h1>
       {/* {UpdateSectionData.map(({ children, number, subscript }) => (
         <UpdateSection key={subscript} number={number} subscript={subscript}>
           {children}
