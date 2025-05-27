@@ -1,34 +1,4 @@
-// // import ProfileForm from "@/custom-components/setting/ProfileForm";
-// // import ArtCardGrid from "@/custom-components/user/ArtCardGrid";
-// import ArtSubmitForm from "@/custom-components/user/ArtSubmitForm";
-// // import Hero from "@/custom-components/user/Hero";
-// export default function Home() {
-//   return (
-//     <>
-//       {/* <Hero />console.log('Rendering Home component');
-//       <header className="ps-3 pt-4 font-semibold font-serif">
-//         <h1>Discover Art You Love From the Local</h1>
-//         <h1>Leading Online Gallery</h1>
-//       </header>
-//       <ArtCardGrid /> */}
-//       {/* <div className="flex flex-col">
-//         {NavLinkData.map(({ name, href, children }) => (
-//           <AdminNavLink key={name} name={name} href={href}>
-//             {children}
-//           </AdminNavLink>
-//         ))}
-//       </div> */}
-//       {/* <Admin /> */}
-//       {/* <Hero /> */}
-//       {/* //the data inside the art card is demo data, in production the real data inside the card comes from backend */}
-//       {/* <ArtCardGrid /> */}
-//       {/* <ArtSubmitForm /> */}
-//     </>
-//   );
-// }
-
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 
 export default function PaintingGallery() {
@@ -41,67 +11,67 @@ export default function PaintingGallery() {
   const artworks = [
     {
       id: 1,
-      image: "/images/img1.jpg",
+      image: "/placeholder.svg?height=120&width=120",
       artist: "Kelas Abdoune",
       title: "Abstract Art",
     },
     {
       id: 2,
-      image: "/images/img2.jpg",
+      image: "/placeholder.svg?height=120&width=120",
       artist: "Daniel Arsila",
       title: "Portrait",
     },
     {
       id: 3,
-      image: "/images/img3.jpg",
+      image: "/placeholder.svg?height=120&width=120",
       artist: "Noel Gessner",
       title: "Landscape",
     },
     {
       id: 4,
-      image: "/images/img4.jpg",
+      image: "/placeholder.svg?height=120&width=120",
       artist: "Donfre walker",
       title: "Modern Art",
     },
     {
       id: 5,
-      image: "/images/img5.jpg",
+      image: "/placeholder.svg?height=120&width=120",
       artist: "Kelas Abdoune",
       title: "Contemporary",
     },
     {
       id: 6,
-      image: "/images/img6.jpg",
+      image: "/placeholder.svg?height=120&width=120",
       artist: "Kelas Abdoune",
       title: "Abstract",
     },
     {
       id: 7,
-      image: "/images/img7.jpg",
+      image: "/placeholder.svg?height=120&width=120",
       artist: "Daniel Arsila",
       title: "Portrait Study",
     },
     {
       id: 8,
-      image: "/images/img8.jpg",
+      image: "/placeholder.svg?height=120&width=120",
       artist: "Noel Gessner",
       title: "Nature",
     },
     {
       id: 9,
-      image: "/images/img9.jpg",
+      image: "/placeholder.svg?height=120&width=120",
       artist: "Donfre walker",
       title: "Urban Art",
     },
     {
       id: 10,
-      image: "/images/img10.jpg",
+      image: "/placeholder.svg?height=120&width=120",
       artist: "Kelas Abdoune",
       title: "Minimalist",
     },
     {
       id: 11,
-      image: "/images/img11.jpg",
+      image: "/placeholder.svg?height=120&width=120",
       artist: "Kelas Abdoune",
       title: "Expressionist",
     },
@@ -182,9 +152,7 @@ export default function PaintingGallery() {
               {/* More Button */}
               <div className="aspect-square rounded-lg bg-gray-100 flex items-center justify-center group cursor-pointer hover:bg-gray-200 transition-colors">
                 <div className="text-center">
-                  <div className="w-8 h-8 rounded-full bg-gray-800 mx-auto mb-2 grid place-items-center">
-                    <ArrowRight className="text-white" />
-                  </div>
+                  <div className="w-8 h-8 rounded-full bg-gray-800 mx-auto mb-2"></div>
                   <p className="text-sm font-medium text-gray-900">More</p>
                 </div>
               </div>

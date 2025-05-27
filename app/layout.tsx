@@ -1,26 +1,13 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import UserNavBar from "@/custom-components/user/UserNavBar";
-// import NavBar from "@/custom-components/user/UserNavBar";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"], // choose what you need
-  variable: "--font-poppins", // optional: use with Tailwind
-  display: "swap", // recommended
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+// const poppins = Poppins({
+//   subsets: ["latin"],
+//   weight: ["400", "500", "600", "700"],
+//   variable: "--font-poppins",
+//   display: "swap",
+// });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -34,13 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white ${poppins.className}`}
-      >
-        {/* <NavBar /> */}
-        <UserNavBar />
-        {children}
-      </body>
+      <body className={`antialiased bg-white`}>{children}</body>
     </html>
   );
 }
