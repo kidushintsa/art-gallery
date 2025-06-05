@@ -27,171 +27,266 @@
 //   );
 // }
 
+"use client";
+
+import { type FieldValues, useForm } from "react-hook-form";
+import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 
-export default function PaintingGallery() {
-  const categories = [
-    { name: "painting", active: true },
-    { name: "photography", active: false },
-    { name: "Sculpture", active: false },
-  ];
+const ArtworkSubmissionForm = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const artworks = [
-    {
-      id: 1,
-      image: "/images/img1.jpg",
-      artist: "Kelas Abdoune",
-      title: "Abstract Art",
-    },
-    {
-      id: 2,
-      image: "/images/img2.jpg",
-      artist: "Daniel Arsila",
-      title: "Portrait",
-    },
-    {
-      id: 3,
-      image: "/images/img3.jpg",
-      artist: "Noel Gessner",
-      title: "Landscape",
-    },
-    {
-      id: 4,
-      image: "/images/img4.jpg",
-      artist: "Donfre walker",
-      title: "Modern Art",
-    },
-    {
-      id: 5,
-      image: "/images/img5.jpg",
-      artist: "Kelas Abdoune",
-      title: "Contemporary",
-    },
-    {
-      id: 6,
-      image: "/images/img6.jpg",
-      artist: "Kelas Abdoune",
-      title: "Abstract",
-    },
-    {
-      id: 7,
-      image: "/images/img7.jpg",
-      artist: "Daniel Arsila",
-      title: "Portrait Study",
-    },
-    {
-      id: 8,
-      image: "/images/img8.jpg",
-      artist: "Noel Gessner",
-      title: "Nature",
-    },
-    {
-      id: 9,
-      image: "/images/img9.jpg",
-      artist: "Donfre walker",
-      title: "Urban Art",
-    },
-    {
-      id: 10,
-      image: "/images/img10.jpg",
-      artist: "Kelas Abdoune",
-      title: "Minimalist",
-    },
-    {
-      id: 11,
-      image: "/images/img11.jpg",
-      artist: "Kelas Abdoune",
-      title: "Expressionist",
-    },
-    {
-      id: 12,
-      image: "/placeholder.svg?height=120&width=120",
-      artist: "Daniel Arsila",
-      title: "Still Life",
-    },
-    {
-      id: 13,
-      image: "/placeholder.svg?height=120&width=120",
-      artist: "Noel Gessner",
-      title: "Abstract Form",
-    },
-    {
-      id: 14,
-      image: "/placeholder.svg?height=120&width=120",
-      artist: "Donfre walker",
-      title: "Color Study",
-    },
-  ];
+  const onSubmit = (data: FieldValues) => {
+    console.log(data);
+  };
 
   return (
     <div className="min-h-screen bg-white p-6">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-2xl font-semibold text-gray-900">Painting</h1>
-          <Button
-            variant="link"
-            className="text-blue-600 hover:text-blue-700 p-0"
-          >
-            See all
+        <div className="flex items-center gap-3 mb-8">
+          <Button variant="ghost" size="icon" className="h-8 w-8">
+            <ArrowLeft className="h-4 w-4" />
           </Button>
+          <h1 className="text-lg font-medium text-gray-900">
+            Artwork management
+          </h1>
         </div>
 
-        <div className="flex gap-8">
-          {/* Categories Sidebar */}
-          <div className="w-32 flex-shrink-0">
-            <h2 className="text-sm font-medium text-gray-900 mb-4">category</h2>
-            <div className="space-y-3">
-              {categories.map((category) => (
-                <button
-                  key={category.name}
-                  className={`block text-left text-sm w-full ${
-                    category.active
-                      ? "text-gray-900 font-medium"
-                      : "text-gray-600 hover:text-gray-900"
-                  }`}
-                >
-                  {category.name}
-                </button>
-              ))}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Artwork Image */}
+          <div className="flex justify-center">
+            <div className="w-80 h-96 py-2 shadow-lg border border-gray-700 bg-indigo-400 rounded-lg overflow-hidden">
+              <Image
+                src="/images/img1.jpg"
+                alt="Spirits of the Women artwork"
+                width={320}
+                height={400}
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
 
-          {/* Artwork Grid */}
-          <div className="flex-1">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-              {artworks.map((artwork) => (
-                <div key={artwork.id} className="group cursor-pointer">
-                  <div className="aspect-square rounded-lg overflow-hidden mb-2 bg-gray-100">
-                    <Image
-                      src={artwork.image || "/placeholder.svg"}
-                      alt={`${artwork.artist} - ${artwork.title}`}
-                      width={120}
-                      height={120}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
-                    />
-                  </div>
-                  <p className="text-xs text-gray-700 text-center font-medium">
-                    {artwork.artist}
-                  </p>
-                </div>
-              ))}
-
-              {/* More Button */}
-              <div className="aspect-square rounded-lg bg-gray-100 flex items-center justify-center group cursor-pointer hover:bg-gray-200 transition-colors">
-                <div className="text-center">
-                  <div className="w-8 h-8 rounded-full bg-gray-800 mx-auto mb-2 grid place-items-center">
-                    <ArrowRight className="text-white" />
-                  </div>
-                  <p className="text-sm font-medium text-gray-900">More</p>
+          {/* Form Section */}
+          <div className="bg-indigo-500 rounded-xl p-6">
+            <div className="flex items-start gap-4 mb-6">
+              <div>
+                <h2 className="text-xl font-bold text-white mb-2">
+                  Spirits of the Women
+                </h2>
+                <div className="size-40 overflow-hidden">
+                  <img
+                    src="/images/img1.jpg"
+                    alt="Artist profile"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
             </div>
+
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                {/* Category */}
+                <div>
+                  <label className="block text-sm font-medium text-white mb-1">
+                    Category
+                  </label>
+                  <input
+                    {...register("category", { required: true, minLength: 3 })}
+                    className="w-full border border-gray-300 p-2 rounded bg-white text-sm"
+                    placeholder="e.g. Painting"
+                    defaultValue="Painting"
+                  />
+                  {errors.category?.type === "required" && (
+                    <p className="text-red-600 text-xs mt-1">
+                      Category is required
+                    </p>
+                  )}
+                  {errors.category?.type === "minLength" && (
+                    <p className="text-red-600 text-xs mt-1">
+                      Must contain at least 3 characters
+                    </p>
+                  )}
+                </div>
+
+                {/* Subject */}
+                <div>
+                  <label className="block text-sm font-medium text-white mb-1">
+                    Subject
+                  </label>
+                  <input
+                    {...register("subject", { required: true, minLength: 3 })}
+                    className="w-full border border-gray-300 p-2 rounded bg-white text-sm"
+                    placeholder="e.g. Cultural"
+                    defaultValue="Cultural"
+                  />
+                  {errors.subject?.type === "required" && (
+                    <p className="text-red-600 text-xs mt-1">
+                      Subject is required
+                    </p>
+                  )}
+                  {errors.subject?.type === "minLength" && (
+                    <p className="text-red-600 text-xs mt-1">
+                      Must contain at least 3 characters
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {/* Style */}
+              <div>
+                <label className="block text-sm font-medium text-white mb-1">
+                  Style
+                </label>
+                <input
+                  {...register("style", { required: true, minLength: 3 })}
+                  className="w-full border border-gray-300 p-2 rounded bg-white text-sm"
+                  placeholder="e.g. Traditional"
+                  defaultValue="Traditional"
+                />
+                {errors.style?.type === "required" && (
+                  <p className="text-red-600 text-xs mt-1">Style is required</p>
+                )}
+                {errors.style?.type === "minLength" && (
+                  <p className="text-red-600 text-xs mt-1">
+                    Must contain at least 3 characters
+                  </p>
+                )}
+              </div>
+
+              {/* Painted By */}
+              <div>
+                <label className="block text-sm font-medium text-white mb-1">
+                  Painted by
+                </label>
+                <input
+                  {...register("paintedBy", { required: true, minLength: 1 })}
+                  className="w-full border border-gray-300 p-2 rounded bg-white text-sm"
+                  placeholder="Artist Name"
+                  defaultValue="Kelas Abdoune"
+                />
+                {errors.paintedBy?.type === "required" && (
+                  <p className="text-red-600 text-xs mt-1">
+                    Artist name is required
+                  </p>
+                )}
+              </div>
+
+              {/* Material */}
+              <div>
+                <label className="block text-sm font-medium text-white mb-1">
+                  Material
+                </label>
+                <input
+                  {...register("material", { required: true, minLength: 3 })}
+                  className="w-full border border-gray-300 p-2 rounded bg-white text-sm"
+                  placeholder="e.g. Canvas"
+                  defaultValue="Canvas"
+                />
+                {errors.material?.type === "required" && (
+                  <p className="text-red-600 text-xs mt-1">
+                    Material is required
+                  </p>
+                )}
+                {errors.material?.type === "minLength" && (
+                  <p className="text-red-600 text-xs mt-1">
+                    Must contain at least 3 characters
+                  </p>
+                )}
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                {/* Calendar */}
+                <div>
+                  <label className="block text-sm font-medium text-white mb-1">
+                    Calendar
+                  </label>
+                  <input
+                    type="date"
+                    {...register("calendar", { required: true })}
+                    className="w-full border border-gray-300 p-2 rounded bg-white text-sm"
+                    defaultValue="2024-09-12"
+                  />
+                  {errors.calendar?.type === "required" && (
+                    <p className="text-red-600 text-xs mt-1">
+                      Date is required
+                    </p>
+                  )}
+                </div>
+
+                {/* Price */}
+                <div>
+                  <label className="block text-sm font-medium text-white mb-1">
+                    Price
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="number"
+                      step="0.01"
+                      {...register("price", {
+                        valueAsNumber: true,
+                        required: true,
+                      })}
+                      className="w-full border border-gray-300 p-2 rounded bg-white text-sm pr-12"
+                      placeholder="50,000"
+                      defaultValue="50000"
+                    />
+                    <span className="absolute right-3 top-2 text-sm text-gray-600">
+                      ETB
+                    </span>
+                  </div>
+                  {errors.price?.type === "required" && (
+                    <p className="text-red-600 text-xs mt-1">
+                      Price is required
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {/* Description */}
+              <div>
+                <label className="block text-sm font-medium text-white mb-1">
+                  Description
+                </label>
+                <textarea
+                  {...register("description", {
+                    required: true,
+                    minLength: 10,
+                  })}
+                  className="w-full border border-gray-300 p-2 rounded bg-white text-sm"
+                  rows={3}
+                  placeholder="Write something about the artwork..."
+                  defaultValue="This powerful artwork celebrates the strength and resilience of women throughout history."
+                />
+                {errors.description?.type === "required" && (
+                  <p className="text-neutral-300 text-xs mt-1">
+                    Description is required
+                  </p>
+                )}
+                {errors.description?.type === "minLength" && (
+                  <p className="text-pink-400 font-bold text-xs mt-1">
+                    Must contain at least 10 characters
+                  </p>
+                )}
+              </div>
+
+              <Button
+                type="submit"
+                className="w-full bg-green-600 hover:bg-green-500 cursor-pointer text-white font-medium py-2 px-4 rounded"
+              >
+                Submit
+              </Button>
+            </form>
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default ArtworkSubmissionForm;

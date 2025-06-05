@@ -1,10 +1,11 @@
 "use client";
 
-import { FieldValues, useForm } from "react-hook-form";
+import { type FieldValues, useForm } from "react-hook-form";
+import { ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
-import React from "react";
-
-const ArtSubmitForm = () => {
+const ArtworkSubmissionForm = () => {
   const {
     register,
     handleSubmit,
@@ -14,146 +15,249 @@ const ArtSubmitForm = () => {
   const onSubmit = (data: FieldValues) => {
     console.log(data);
   };
+
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="max-w-md mx-auto space-y-4 p-4 border rounded-lg shadow"
-    >
-      {/* Category */}
-      <div>
-        <label className="block text-sm font-medium mb-1">Category</label>
-        <input
-          {...register("category", { required: true, minLength: 3 })}
-          className="w-full border p-2 rounded"
-          placeholder="e.g. Abstract"
-        />
-        {errors.category?.type == "required" && (
-          <p className="text-red-500 text-sm">Category is required</p>
-        )}
-      </div>
+    <div className="min-h-screen bg-white p-6">
+      <div className="max-w-6xl mx-auto">
+        {/* Header */}
+        <div className="flex items-center gap-3 mb-8">
+          <Button variant="ghost" size="icon" className="h-8 w-8">
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
+          <h1 className="text-lg font-medium text-gray-900">
+            Artwork management
+          </h1>
+        </div>
 
-      {/* Subject */}
-      <div>
-        <label className="block text-sm font-medium mb-1">Subject</label>
-        <input
-          {...register("subject", { required: true, minLength: 3 })}
-          className="w-full border p-2 rounded"
-          placeholder="e.g. Nature"
-        />
-        {errors.category?.type == "required" && (
-          <p className="text-red-500 text-sm">subject is required</p>
-        )}
-        {errors.category?.type == "minLength" && (
-          <p className="text-red-500 text-sm">
-            must conatain atleat 3 character
-          </p>
-        )}
-      </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Artwork Image */}
+          <div className="flex justify-center">
+            <div className="w-80 h-96 py-2 shadow-lg border border-gray-700 bg-indigo-400 rounded-lg overflow-hidden">
+              <Image
+                src="/images/img1.jpg"
+                alt="Spirits of the Women artwork"
+                width={320}
+                height={400}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
 
-      {/* Style */}
-      <div>
-        <label className="block text-sm font-medium mb-1">Style</label>
-        <input
-          {...register("style", { required: true, minLength: 3 })}
-          className="w-full border p-2 rounded"
-          placeholder="e.g. Modern"
-        />
-        {errors.style?.type == "required" && (
-          <p className="text-red-500 text-sm">style is required</p>
-        )}
-        {errors.style?.type == "minLength" && (
-          <p className="text-red-500 text-sm">
-            must conatain atleat 3 character
-          </p>
-        )}
-      </div>
+          {/* Form Section */}
+          <div className="bg-indigo-500 rounded-xl p-6">
+            <div className="flex items-start gap-4 mb-6">
+              <div>
+                <h2 className="text-xl font-bold text-white mb-2">
+                  Spirits of the Women
+                </h2>
+                <div className="size-40 overflow-hidden">
+                  <img
+                    src="/images/img1.jpg"
+                    alt="Artist profile"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+            </div>
 
-      {/* Painted By */}
-      <div>
-        <label className="block text-sm font-medium mb-1">Painted By</label>
-        <input
-          {...register("paintedBy", { required: true, minLength: 1 })}
-          className="w-full border p-2 rounded"
-          placeholder="Artist Name"
-        />
-        {errors.paintedBy?.type == "required" && (
-          <p className="text-red-500 text-sm">name is required</p>
-        )}
-      </div>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                {/* Category */}
+                <div>
+                  <label className="block text-sm font-medium text-white mb-1">
+                    Category
+                  </label>
+                  <input
+                    {...register("category", { required: true, minLength: 3 })}
+                    className="w-full border border-gray-300 p-2 rounded bg-white text-sm"
+                    placeholder="e.g. Painting"
+                    defaultValue="Painting"
+                  />
+                  {errors.category?.type === "required" && (
+                    <p className="text-red-600 text-xs mt-1">
+                      Category is required
+                    </p>
+                  )}
+                  {errors.category?.type === "minLength" && (
+                    <p className="text-red-600 text-xs mt-1">
+                      Must contain at least 3 characters
+                    </p>
+                  )}
+                </div>
 
-      {/* Material */}
-      <div>
-        <label className="block text-sm font-medium mb-1">Material</label>
-        <input
-          {...register("material", { required: true, minLength: 3 })}
-          className="w-full border p-2 rounded"
-          placeholder="e.g. Canvas"
-        />
-        {errors.material?.type == "required" && (
-          <p className="text-red-500 text-sm">material is required</p>
-        )}
-        {errors.material?.type == "minLength" && (
-          <p className="text-red-500 text-sm">
-            must conatain atleat 3 character
-          </p>
-        )}
-      </div>
+                {/* Subject */}
+                <div>
+                  <label className="block text-sm font-medium text-white mb-1">
+                    Subject
+                  </label>
+                  <input
+                    {...register("subject", { required: true, minLength: 3 })}
+                    className="w-full border border-gray-300 p-2 rounded bg-white text-sm"
+                    placeholder="e.g. Cultural"
+                    defaultValue="Cultural"
+                  />
+                  {errors.subject?.type === "required" && (
+                    <p className="text-red-600 text-xs mt-1">
+                      Subject is required
+                    </p>
+                  )}
+                  {errors.subject?.type === "minLength" && (
+                    <p className="text-red-600 text-xs mt-1">
+                      Must contain at least 3 characters
+                    </p>
+                  )}
+                </div>
+              </div>
 
-      {/* Calendar */}
-      <div>
-        <label className="block text-sm font-medium mb-1">Date</label>
-        <input
-          type="date"
-          {...register("calendar", { required: true })}
-          className="w-full border p-2 rounded"
-        />
-        {errors.calendar?.type == "required" && (
-          <p className="text-red-500 text-sm">Date is required</p>
-        )}
-      </div>
+              {/* Style */}
+              <div>
+                <label className="block text-sm font-medium text-white mb-1">
+                  Style
+                </label>
+                <input
+                  {...register("style", { required: true, minLength: 3 })}
+                  className="w-full border border-gray-300 p-2 rounded bg-white text-sm"
+                  placeholder="e.g. Traditional"
+                  defaultValue="Traditional"
+                />
+                {errors.style?.type === "required" && (
+                  <p className="text-red-600 text-xs mt-1">Style is required</p>
+                )}
+                {errors.style?.type === "minLength" && (
+                  <p className="text-red-600 text-xs mt-1">
+                    Must contain at least 3 characters
+                  </p>
+                )}
+              </div>
 
-      {/* Price */}
-      <div>
-        <label className="block text-sm font-medium mb-1">Price (ETB)</label>
-        <input
-          type="number"
-          step="0.01"
-          {...register("price", { valueAsNumber: true, required: true })}
-          className="w-full border p-2 rounded"
-          placeholder="e.g. 100"
-        />
-        {errors.price?.type == "required" && (
-          <p className="text-red-500 text-sm">price is required</p>
-        )}
-      </div>
+              {/* Painted By */}
+              <div>
+                <label className="block text-sm font-medium text-white mb-1">
+                  Painted by
+                </label>
+                <input
+                  {...register("paintedBy", { required: true, minLength: 1 })}
+                  className="w-full border border-gray-300 p-2 rounded bg-white text-sm"
+                  placeholder="Artist Name"
+                  defaultValue="Kelas Abdoune"
+                />
+                {errors.paintedBy?.type === "required" && (
+                  <p className="text-red-600 text-xs mt-1">
+                    Artist name is required
+                  </p>
+                )}
+              </div>
 
-      {/* Description */}
-      <div>
-        <label className="block text-sm font-medium mb-1">Description</label>
-        <textarea
-          {...register("description", { required: true, minLength: 10 })}
-          className="w-full border p-2 rounded"
-          rows={3}
-          placeholder="Write something about the artwork..."
-        />
-        {errors.price?.type == "required" && (
-          <p className="text-red-500 text-sm">price is required</p>
-        )}
-        {errors.price?.type == "minLength" && (
-          <p className="text-red-500 text-sm">
-            must contain atleast 10 character
-          </p>
-        )}
-      </div>
+              {/* Material */}
+              <div>
+                <label className="block text-sm font-medium text-white mb-1">
+                  Material
+                </label>
+                <input
+                  {...register("material", { required: true, minLength: 3 })}
+                  className="w-full border border-gray-300 p-2 rounded bg-white text-sm"
+                  placeholder="e.g. Canvas"
+                  defaultValue="Canvas"
+                />
+                {errors.material?.type === "required" && (
+                  <p className="text-red-600 text-xs mt-1">
+                    Material is required
+                  </p>
+                )}
+                {errors.material?.type === "minLength" && (
+                  <p className="text-red-600 text-xs mt-1">
+                    Must contain at least 3 characters
+                  </p>
+                )}
+              </div>
 
-      <button
-        type="submit"
-        className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
-      >
-        Submit
-      </button>
-    </form>
+              <div className="grid grid-cols-2 gap-4">
+                {/* Calendar */}
+                <div>
+                  <label className="block text-sm font-medium text-white mb-1">
+                    Calendar
+                  </label>
+                  <input
+                    type="date"
+                    {...register("calendar", { required: true })}
+                    className="w-full border border-gray-300 p-2 rounded bg-white text-sm"
+                    defaultValue="2024-09-12"
+                  />
+                  {errors.calendar?.type === "required" && (
+                    <p className="text-red-600 text-xs mt-1">
+                      Date is required
+                    </p>
+                  )}
+                </div>
+
+                {/* Price */}
+                <div>
+                  <label className="block text-sm font-medium text-white mb-1">
+                    Price
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="number"
+                      step="0.01"
+                      {...register("price", {
+                        valueAsNumber: true,
+                        required: true,
+                      })}
+                      className="w-full border border-gray-300 p-2 rounded bg-white text-sm pr-12"
+                      placeholder="50,000"
+                      defaultValue="50000"
+                    />
+                    <span className="absolute right-3 top-2 text-sm text-gray-600">
+                      ETB
+                    </span>
+                  </div>
+                  {errors.price?.type === "required" && (
+                    <p className="text-red-600 text-xs mt-1">
+                      Price is required
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {/* Description */}
+              <div>
+                <label className="block text-sm font-medium text-white mb-1">
+                  Description
+                </label>
+                <textarea
+                  {...register("description", {
+                    required: true,
+                    minLength: 10,
+                  })}
+                  className="w-full border border-gray-300 p-2 rounded bg-white text-sm"
+                  rows={3}
+                  placeholder="Write something about the artwork..."
+                  defaultValue="This powerful artwork celebrates the strength and resilience of women throughout history."
+                />
+                {errors.description?.type === "required" && (
+                  <p className="text-red-600 text-xs mt-1">
+                    Description is required
+                  </p>
+                )}
+                {errors.description?.type === "minLength" && (
+                  <p className="text-red-600 text-xs mt-1">
+                    Must contain at least 10 characters
+                  </p>
+                )}
+              </div>
+
+              <Button
+                type="submit"
+                className="w-full bg-pink-400 hover:bg-green-600 text-white font-medium py-2 px-4 rounded"
+              >
+                Submit
+              </Button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
-export default ArtSubmitForm;
+export default ArtworkSubmissionForm;
