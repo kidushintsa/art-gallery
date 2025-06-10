@@ -15,9 +15,111 @@ datasource db {
 }
 
 
-model Admin{
-admin_id Int @id @default(autoincrement())
-email String @unique
-name  String
-password String
+model User {
+  id             Int       @id @default(autoincrement())
+  firstName      String
+  lastName       String
+  email          String    @unique
+  passwordHash   String
+  role           Role      @default(CUSTOMER)
+  artistProfile ArtistProfile?
+  createdAt      DateTime  @default(now())
+
+  artworks       Artwork[]   @relation("ArtistArtworks")
+  cartItems      CartItem[]  @relation("CustomerCart")
+  orders         Order[]     @relation("CustomerOrders")
+  orderItems     OrderItem[] // For artist earnings tracking
+  payouts        Payout[]    // For artist payout tracking
+}
+model ArtistProfile {
+  id            Int    @id @default(autoincrement())
+  userId        Int    @unique
+  user          User   @relation(fields: [userId], references: [id])
+  payoutMethod  String
+  payoutAccount String
+  bio           String?
+}
+
+enum Role {
+  CUSTOMER
+  ARTIST
+  ADMIN
+}
+
+model Artwork {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String
+  price       Float
+  imageUrl    String
+  approved    Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  artist      User      @relation("ArtistArtworks", fields: [artistId], references: [id])
+  artistId    Int
+  orderItems  OrderItem[]
+  cartItems   CartItem[]
+}
+
+model CartItem {
+  id         Int       @id @default(autoincrement())
+  addedAt    DateTime  @default(now())
+
+  user       User      @relation("CustomerCart", fields: [userId], references: [id])
+  userId     Int
+
+  artwork    Artwork   @relation(fields: [artworkId], references: [id])
+  artworkId  Int
+}
+
+model Order {
+  id              Int           @id @default(autoincrement())
+  totalAmount     Float
+  paymentStatus   PaymentStatus @default(PENDING)
+  paymentMethod   String?
+  chapaTxRef      String?
+  createdAt       DateTime      @default(now())
+
+  user            User          @relation("CustomerOrders", fields: [userId], references: [id])
+  userId          Int
+
+  orderItems      OrderItem[]
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+}
+
+model OrderItem {
+  id            Int           @id @default(autoincrement())
+  price         Float
+  artistCut     Float
+  payoutStatus  PayoutStatus  @default(UNPAID)
+  payoutDate    DateTime?
+
+  order         Order         @relation(fields: [orderId], references: [id])
+  orderId       Int
+
+  artwork       Artwork       @relation(fields: [artworkId], references: [id])
+  artworkId     Int
+
+  artist        User          @relation(fields: [artistId], references: [id])
+  artistId      Int
+}
+
+enum PayoutStatus {
+  UNPAID
+  PAID
+}
+
+model Payout {
+  id         Int       @id @default(autoincrement())
+  amount     Float
+  method     String
+  reference  String?
+  createdAt  DateTime  @default(now())
+
+  artist     User      @relation(fields: [artistId], references: [id])
+  artistId   Int
 }
