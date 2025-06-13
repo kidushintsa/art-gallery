@@ -17,8 +17,7 @@ datasource db {
 
 model User {
   id             Int       @id @default(autoincrement())
-  firstName      String
-  lastName       String
+  name           String
   email          String    @unique
   passwordHash   String
   role           Role      @default(CUSTOMER)
@@ -37,7 +36,6 @@ model ArtistProfile {
   user          User   @relation(fields: [userId], references: [id])
   payoutMethod  String
   payoutAccount String
-  bio           String?
 }
 
 enum Role {

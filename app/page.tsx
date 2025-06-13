@@ -1,11 +1,29 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { Header } from "@/custom-components/user/header";
+import Hero from "@/custom-components/user/Hero";
 import React from "react";
 import { Typewriter } from "react-simple-typewriter";
 
 const page = () => {
   return (
     <>
+      <Header />
+      <Hero />
+    </>
+  );
+};
+
+export default page;
+
+{
+  /* <header className="ps-3 pt-4 font-semibold font-serif">
+        <h1>Discover Art You Love From the Local</h1>
+        <h1>Leading Online Gallery</h1>
+      </header> 
+      
+      
+       <>
       <div className="h-screen bg-[url('/images/img6.jpg')] bg-cover bg-center">
         <div className="backdrop-blur-sm h-full">
           <div
@@ -48,14 +66,5 @@ const page = () => {
         </div>
       </div>
     </>
-  );
-};
-
-export default page;
-
-{
-  /* <header className="ps-3 pt-4 font-semibold font-serif">
-        <h1>Discover Art You Love From the Local</h1>
-        <h1>Leading Online Gallery</h1>
-      </header> */
+      */
 }
