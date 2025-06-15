@@ -19,11 +19,10 @@ model User {
   id             Int       @id @default(autoincrement())
   name           String
   email          String    @unique
-  passwordHash   String
+  hashedPassword   String
   role           Role      @default(CUSTOMER)
   artistProfile ArtistProfile?
   createdAt      DateTime  @default(now())
-
   artworks       Artwork[]   @relation("ArtistArtworks")
   cartItems      CartItem[]  @relation("CustomerCart")
   orders         Order[]     @relation("CustomerOrders")

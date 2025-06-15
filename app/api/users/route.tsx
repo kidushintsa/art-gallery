@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { schema } from "./schema";
 import bcrypt from "bcrypt";
 
-export async function GET(req: NextRequest) {}
+// export async function GET(req: NextRequest) {}
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
@@ -14,13 +14,12 @@ export async function POST(req: NextRequest) {
       { status: 400 }
     );
   const salt = await bcrypt.genSalt(10);
-  const passwordHash = await bcrypt.hash(body.password, salt);
+  const hashedPassword = await bcrypt.hash(body.password, salt);
   const user = await prisma.user.create({
     data: {
-      firstName: body.firstName,
-      lastName: body.lastName,
+      name: body.name,
       email: body.email,
-      passwordHash,
+      hashedPassword,
     },
   });
 
