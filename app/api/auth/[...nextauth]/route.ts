@@ -32,7 +32,7 @@ const handler = NextAuth({
 
         if (!user) {
           console.log("No user found");
-          return null;
+          return null; // return ;
         }
 
         const passwordsMatch = await bcrypt.compare(

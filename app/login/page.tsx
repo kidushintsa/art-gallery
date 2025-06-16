@@ -31,14 +31,11 @@ export default function LoginPage() {
     });
     console.log("FULL RESPONSE", res);
 
-    if (!res || !res.ok) {
-      console.log("Sign in result for not working", res);
-
+    if (!res?.ok || res.error) {
       setError("Invalid email or password.");
-    } else {
-      router.push("/about");
-      console.log("Sign in result", res);
+      return;
     }
+    router.push("/about");
   };
 
   return (
