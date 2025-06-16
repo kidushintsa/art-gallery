@@ -7,9 +7,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { AddToCartButton } from "./addToCart";
 // import { Description } from "@radix-ui/react-dialog";
 
 const ArtCard = ({
+  id,
   src,
   alt,
   description,
@@ -33,7 +35,7 @@ const ArtCard = ({
           </div>
         </DialogTrigger>
         <DialogContent className="p-0 max-w-4xl">
-          <DialogTitle>Are you absolutely sure?</DialogTitle>
+          <DialogTitle className="text-center py-2">{description}</DialogTitle>
           <div className="relative w-full h-[90vh]">
             <Image
               src={src}
@@ -48,15 +50,14 @@ const ArtCard = ({
       {/* Details and actions */}
       <div className="flex justify-between p-4">
         <div className="">
-          <div className="">{description}</div>
+          <div className="w-2/3">{description}</div>
           <div className="text-sm text-gray-500">By {artist}</div>
         </div>
-        <div className="text-md font-medium pe-3">{price}ETB</div>
-        <div className="flex flex-col items-center gap-2">
-          <button className="border-2 border-black rounded-full p-1">
-            <Plus size={16} strokeWidth={3} />
-          </button>
-          <ShoppingCart size={24} strokeWidth={2} />
+        <div>
+          <div className="text-md font-medium pe-3">{price}ETB</div>
+          <div className="flex flex-col items-center gap-2">
+            <AddToCartButton id={id!} />
+          </div>
         </div>
       </div>
     </div>
