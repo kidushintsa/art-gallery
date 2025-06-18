@@ -2,8 +2,14 @@ import { prisma } from "@/prisma/client";
 import NextAuth from "next-auth";
 import CredentialProviders from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
+import GoogleProvider from "next-auth/providers/google";
+
 const handler = NextAuth({
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
     CredentialProviders({
       name: "Credentials",
       credentials: {
@@ -54,7 +60,7 @@ const handler = NextAuth({
     strategy: "jwt",
   },
   pages: {
-    signIn: "/login", // your custom login page
+    signIn: "/", // your custom login page
   },
 });
 

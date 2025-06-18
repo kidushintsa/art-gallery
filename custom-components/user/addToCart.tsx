@@ -1,6 +1,6 @@
 "use client";
 
-import { Plus, ShoppingCart, Check } from "lucide-react";
+import { Plus, Minus, ShoppingCart, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 // import { useCart } from "@/app/context/cart-context";
