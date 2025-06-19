@@ -3,12 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 
 export default function LandingPage() {
-  const router = useRouter();
-
   return (
     <div className="min-h-screen flex flex-col">
       {/* Simple Header */}
@@ -54,10 +51,8 @@ export default function LandingPage() {
                 <Button
                   className="h-12 bg-white hover:bg-gray-50 text-gray-900 border border-gray-300 cursor-pointer"
                   size="lg"
-                  onClick={() => {
-                    return signIn("google");
-                    // router.push("/role-selection")
-                  }}
+                  onClick={() => signIn("google")}
+                  // router.push("/role-selection")
                 >
                   <svg className="mr-3 h-5 w-5" viewBox="0 0 24 24">
                     <path

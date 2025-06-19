@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Palette, Eye, ArrowRight } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export default function RoleSelection() {
   const { register, handleSubmit, watch, setValue } = useForm({
@@ -50,10 +51,35 @@ export default function RoleSelection() {
     },
   ];
   const router = useRouter();
-  const onSubmit = (data: { role: string }) => {
-    console.log("Selected role:", data.role);
-    if (data.role === "customer") return router.push("/dashboard/customer");
-    return router.push("/dashboard/artist");
+  const { status } = useSession();
+
+  const onSubmit = async (data: { role: string }) => {
+    if (status === "authenticated") {
+      try {
+        const res = await fetch("/api/register/role", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ role: data.role.toUpperCase() }),
+        });
+
+        if (res.ok) {
+          window.alert("Role inserted successfully!");
+          if (data.role === "artist") {
+            router.push("/paymentmethods");
+          } else {
+            router.push("/dashboard/customer");
+          }
+        } else {
+          const { error } = await res.json();
+          window.alert("Error: " + error);
+        }
+      } catch (error) {
+        console.error("Submission error:", error);
+        window.alert("Something went wrong. Try again.");
+      }
+    } else {
+      window.alert("You must be logged in to select a role.");
+    }
   };
 
   return (
