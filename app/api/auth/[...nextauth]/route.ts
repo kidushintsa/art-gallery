@@ -59,24 +59,41 @@ export const authOptions: NextAuthOptions = {
     // }),
   ],
   session: {
-    strategy: "jwt",
+    strategy: "database",
   },
   pages: {
     signIn: "/", // your custom login page
   },
   callbacks: {
-    async redirect({ url, baseUrl }) {
-      return baseUrl + "/check-role"; // go to a custom role check route
-    },
-    async jwt({ token, user }) {
-      if (user) {
-        token.role = user.role;
+    redirect({ url, baseUrl }) {
+      // Only redirect after sign-in, not after sign-out
+      if (url === baseUrl || url === baseUrl + "/") {
+        return baseUrl + "/check-role"; // login redirect
       }
-      return token;
+      return url;
     },
-    async session({ session, token }) {
-      if (session.user) {
-        session.user.role = token.role as string;
+    // async jwt({ token, user }) {
+    //   if (user) {
+    //     // First time user signs in
+    //     const dbUser = await prisma.user.findUnique({
+    //       where: { email: user.email! },
+    //     });
+
+    //     token.role = (dbUser?.role as string) ?? null;
+    //   }
+
+    //   return token;
+    // },
+    // async session({ session, token }) {
+    //   if (session.user) {
+    //     session.user.role = token.role as string;
+    //   }
+    //   return session;
+    // },
+    async session({ session, user }) {
+      // ✅ Now `user.role` comes from DB automatically
+      if (session.user && user) {
+        session.user.role = user.role;
       }
       return session;
     },

@@ -54,7 +54,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
  hashedPassword   String?
-  role           Role      @default(CUSTOMER)
+  role           Role?
   artistProfile ArtistProfile?
   createdAt      DateTime  @default(now())
   artworks       Artwork[]   @relation("ArtistArtworks")

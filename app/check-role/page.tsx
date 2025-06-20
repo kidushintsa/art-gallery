@@ -4,7 +4,7 @@
 import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { SyncLoader } from "react-spinners";
+import { MoonLoader } from "react-spinners";
 
 export default function CheckRolePage() {
   const { data: session, status } = useSession();
@@ -13,7 +13,7 @@ export default function CheckRolePage() {
   useEffect(() => {
     if (status === "authenticated") {
       const role = session?.user?.role;
-
+      console.log(role);
       if (role === "ARTIST") {
         router.replace("/dashboard/artist");
       } else if (role === "CUSTOMER") {
@@ -25,12 +25,8 @@ export default function CheckRolePage() {
   }, [status, session, router]);
 
   return (
-    <p className="text-center mt-10 text-gray-500">
-      <SyncLoader
-        size={150}
-        aria-label="Loading Spinner"
-        data-testid="loader"
-      />
-    </p>
+    <div className="text-center mt-10 text-gray-500 grid h-screen place-items-center">
+      <MoonLoader size={60} aria-label="Loading Spinner" data-testid="loader" />
+    </div>
   );
 }
