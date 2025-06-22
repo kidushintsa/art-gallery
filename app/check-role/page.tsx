@@ -1,4 +1,3 @@
-// app/check-role/page.tsx
 "use client";
 
 import { useEffect } from "react";
@@ -7,26 +6,44 @@ import { useRouter } from "next/navigation";
 import { MoonLoader } from "react-spinners";
 
 export default function CheckRolePage() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
-    if (status === "authenticated") {
-      const role = session?.user?.role;
-      console.log(role);
-      if (role === "ARTIST") {
-        router.replace("/dashboard/artist");
-      } else if (role === "CUSTOMER") {
-        router.replace("/dashboard/customer");
-      } else {
+    const checkRole = async () => {
+      if (status !== "authenticated") return;
+
+      try {
+        const res = await fetch("/api/user-role", { cache: "no-store" });
+        const data = await res.json();
+
+        if (res.ok && data.role) {
+          if (data.role === "ARTIST") {
+            router.replace("/dashboard/artist");
+          } else if (data.role === "CUSTOMER") {
+            router.replace("/dashboard/customer");
+          } else {
+            router.replace("/role-selection");
+          }
+        } else {
+          router.replace("/role-selection");
+        }
+      } catch (error) {
+        console.error("Error checking role:", error);
         router.replace("/role-selection");
       }
-    }
-  }, [status, session, router]);
+    };
 
-  return (
-    <div className="text-center mt-10 text-gray-500 grid h-screen place-items-center">
-      <MoonLoader size={60} aria-label="Loading Spinner" data-testid="loader" />
-    </div>
-  );
+    checkRole();
+  }, [status, router]);
+
+  if (status === "loading" || status === "unauthenticated") {
+    return (
+      <div className="grid h-screen place-items-center text-gray-500">
+        <MoonLoader size={60} />
+      </div>
+    );
+  }
+
+  return null;
 }

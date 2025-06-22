@@ -1,24 +1,15 @@
-import NextAuth from "next-auth";
+import NextAuth, { DefaultSession } from "next-auth";
 
 declare module "next-auth" {
   interface Session {
     user: {
-      name?: string | null;
-      email?: string | null;
-      image?: string | null;
-      role?: string; // ✅ Add this line
-      // id?: string;   // ✅ If you also need `user.id`
-    };
+      id: string; // Add the user's ID
+      role: string | null; // Add the user's role
+    } & DefaultSession["user"];
   }
 
+  // If you are using the database strategy, you might want to add role to the User model as well
   interface User {
-    role?: string; // from database
-    id: string;
-  }
-}
-
-declare module "next-auth/jwt" {
-  interface JWT {
-    role?: string;
+    role?: string | null;
   }
 }

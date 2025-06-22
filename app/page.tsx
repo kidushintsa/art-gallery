@@ -1,11 +1,12 @@
 "use client";
 
+// import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { signIn } from "next-auth/react";
+// import { Button } from "@/components/ui/button";
+// import { signIn } from "next-auth/react";
 
-export default function LandingPage() {
+export default function Page() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Simple Header */}
@@ -48,10 +49,11 @@ export default function LandingPage() {
                 discover and purchase unique pieces.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                <Button
+                <Link
                   className="h-12 bg-white hover:bg-gray-50 text-gray-900 border border-gray-300 cursor-pointer"
-                  size="lg"
-                  onClick={() => signIn("google")}
+                  // size="lg"
+                  href="/api/auth/signin"
+                  // onClick={() => signIn("google")}
                   // router.push("/role-selection")
                 >
                   <svg className="mr-3 h-5 w-5" viewBox="0 0 24 24">
@@ -73,7 +75,7 @@ export default function LandingPage() {
                     />
                   </svg>
                   Continue with Google
-                </Button>
+                </Link>
               </div>
               <p className="text-xs text-gray-500 mt-4 max-w-md">
                 By continuing, you agree to our{" "}

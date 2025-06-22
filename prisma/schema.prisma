@@ -53,15 +53,17 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
- hashedPassword   String?
-  role           Role?
-  artistProfile ArtistProfile?
-  createdAt      DateTime  @default(now())
-  artworks       Artwork[]   @relation("ArtistArtworks")
-  cartItems      CartItem[]  @relation("CustomerCart")
-  orders         Order[]     @relation("CustomerOrders")
-  orderItems     OrderItem[] // For artist earnings tracking
-  payouts        Payout[]    // For artist payout tracking
+  userInfo      UserInfo?
+
+//  hashedPassword   String?
+//   role           Role?
+//   artistProfile ArtistProfile?
+//   createdAt      DateTime  @default(now())
+//   artworks       Artwork[]   @relation("ArtistArtworks")
+//   cartItems      CartItem[]  @relation("CustomerCart")
+//   orders         Order[]     @relation("CustomerOrders")
+//   orderItems     OrderItem[] // For artist earnings tracking
+//   payouts        Payout[]    // For artist payout tracking
   @@map("users")
 }
  
@@ -73,14 +75,14 @@ model VerificationToken {
   @@unique([identifier, token])
   @@map("verification_tokens")
 }
-model ArtistProfile {
-  id            Int    @id @default(autoincrement())
-  userId        String    @unique
-  user          User   @relation(fields: [userId], references: [id])
-  payoutMethod  String
-  payoutAccount String
-  AccountHolderName String
-}
+// model ArtistProfile {
+//   id            Int    @id @default(autoincrement())
+//   userId        String    @unique
+//   user          User   @relation(fields: [userId], references: [id])
+//   payoutMethod  String
+//   payoutAccount String
+//   AccountHolderName String
+// }
 
 enum Role {
   CUSTOMER
@@ -88,83 +90,182 @@ enum Role {
   ADMIN
 }
 
-model Artwork {
-  id          Int       @id @default(autoincrement())
-  title       String
-  description String
-  price       Float
-  imageUrl    String
-  approved    Boolean   @default(false)
-  createdAt   DateTime  @default(now())
-  artist      User      @relation("ArtistArtworks", fields: [artistId], references: [id])
-  artistId    String
-  orderItems  OrderItem[]
-  cartItems   CartItem[]
+// model Artwork {
+//   id          Int       @id @default(autoincrement())
+//   title       String
+//   description String
+//   price       Float
+//   imageUrl    String
+//   approved    Boolean   @default(false)
+//   createdAt   DateTime  @default(now())
+//   artist      User      @relation("ArtistArtworks", fields: [artistId], references: [id])
+//   artistId    String
+//   orderItems  OrderItem[]
+//   cartItems   CartItem[]
+// }
+
+// model CartItem {
+//   id         Int       @id @default(autoincrement())
+//   addedAt    DateTime  @default(now())
+
+//   user       User      @relation("CustomerCart", fields: [userId], references: [id])
+//   userId     String
+
+//   artwork    Artwork   @relation(fields: [artworkId], references: [id])
+//   artworkId  Int
+// }
+
+// model Order {
+//   id              Int           @id @default(autoincrement())
+//   totalAmount     Float
+//   paymentStatus   PaymentStatus @default(PENDING)
+//   paymentMethod   String?
+//   chapaTxRef      String?
+//   createdAt       DateTime      @default(now())
+
+//   user            User          @relation("CustomerOrders", fields: [userId], references: [id])
+//   userId          String
+
+//   orderItems      OrderItem[]
+// }
+
+// enum PaymentStatus {
+//   PENDING
+//   PAID
+//   FAILED
+// }
+
+// model OrderItem {
+//   id            Int           @id @default(autoincrement())
+//   price         Float
+//   artistCut     Float
+//   payoutStatus  PayoutStatus  @default(UNPAID)
+//   payoutDate    DateTime?
+
+//   order         Order         @relation(fields: [orderId], references: [id])
+//   orderId       Int
+
+//   artwork       Artwork       @relation(fields: [artworkId], references: [id])
+//   artworkId     Int
+
+//   artist        User          @relation(fields: [artistId], references: [id])
+//   artistId      String
+// }
+
+// enum PayoutStatus {
+//   UNPAID
+//   PAID
+// }
+
+// model Payout {
+//   id         Int       @id @default(autoincrement())
+//   amount     Float
+//   method     String
+//   reference  String?
+//   createdAt  DateTime  @default(now())
+
+//   artist     User      @relation(fields: [artistId], references: [id])
+//   artistId   String
+// }
+
+
+model UserInfo {
+  id               Int    @id @default(autoincrement())
+  userId           String @unique
+  role             Role  
+  // payoutMethod     String?
+//   // payoutAccount    String?
+//   // accountHolderName String?
+
+  user             User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+// //   artworks         Artwork[]   @relation("ArtistArtworks")
+// //   cartItems        CartItem[]  @relation("CustomerCart")
+// //   orders           Order[]     @relation("CustomerOrders")
+// //   orderItems       OrderItem[] // For artist earnings tracking
+// //   payouts          Payout[]    // For artist payout tracking
 }
 
-model CartItem {
-  id         Int       @id @default(autoincrement())
-  addedAt    DateTime  @default(now())
+// enum Role {
+//   CUSTOMER
+//   ARTIST
+//   ADMIN
+// }
 
-  user       User      @relation("CustomerCart", fields: [userId], references: [id])
-  userId     String
+// model Artwork {
+//   id          Int       @id @default(autoincrement())
+//   title       String
+//   description String
+//   price       Float
+//   imageUrl    String
+//   approved    Boolean   @default(false)
+//   createdAt   DateTime  @default(now())
 
-  artwork    Artwork   @relation(fields: [artworkId], references: [id])
-  artworkId  Int
-}
+//   artistId    Int
+//   artist      UserInfo  @relation("ArtistArtworks", fields: [artistId], references: [id])
+//   orderItems  OrderItem[]
+//   cartItems   CartItem[]
+// }
 
-model Order {
-  id              Int           @id @default(autoincrement())
-  totalAmount     Float
-  paymentStatus   PaymentStatus @default(PENDING)
-  paymentMethod   String?
-  chapaTxRef      String?
-  createdAt       DateTime      @default(now())
+// model CartItem {
+//   id         Int       @id @default(autoincrement())
+//   addedAt    DateTime  @default(now())
 
-  user            User          @relation("CustomerOrders", fields: [userId], references: [id])
-  userId          String
+//   userId     Int
+//   user       UserInfo  @relation("CustomerCart", fields: [userId], references: [id])
 
-  orderItems      OrderItem[]
-}
+//   artworkId  Int
+//   artwork    Artwork   @relation(fields: [artworkId], references: [id])
+// }
 
-enum PaymentStatus {
-  PENDING
-  PAID
-  FAILED
-}
+// model Order {
+//   id              Int           @id @default(autoincrement())
+//   totalAmount     Float
+//   paymentStatus   PaymentStatus @default(PENDING)
+//   paymentMethod   String?
+//   chapaTxRef      String?
+//   createdAt       DateTime      @default(now())
 
-model OrderItem {
-  id            Int           @id @default(autoincrement())
-  price         Float
-  artistCut     Float
-  payoutStatus  PayoutStatus  @default(UNPAID)
-  payoutDate    DateTime?
+//   userId          Int
+//   user            UserInfo      @relation("CustomerOrders", fields: [userId], references: [id])
 
-  order         Order         @relation(fields: [orderId], references: [id])
-  orderId       Int
+//   orderItems      OrderItem[]
+// }
 
-  artwork       Artwork       @relation(fields: [artworkId], references: [id])
-  artworkId     Int
+// enum PaymentStatus {
+//   PENDING
+//   PAID
+//   FAILED
+// }
 
-  artist        User          @relation(fields: [artistId], references: [id])
-  artistId      String
-}
+// model OrderItem {
+//   id            Int           @id @default(autoincrement())
+//   price         Float
+//   artistCut     Float
+//   payoutStatus  PayoutStatus  @default(UNPAID)
+//   payoutDate    DateTime?
 
-enum PayoutStatus {
-  UNPAID
-  PAID
-}
+//   orderId       Int
+//   order         Order         @relation(fields: [orderId], references: [id])
 
-model Payout {
-  id         Int       @id @default(autoincrement())
-  amount     Float
-  method     String
-  reference  String?
-  createdAt  DateTime  @default(now())
+//   artworkId     Int
+//   artwork       Artwork       @relation(fields: [artworkId], references: [id])
 
-  artist     User      @relation(fields: [artistId], references: [id])
-  artistId   String
-}
+//   artistId      Int
+//   artist        UserInfo      @relation(fields: [artistId], references: [id])
+// }
 
+// enum PayoutStatus {
+//   UNPAID
+//   PAID
+// }
 
+// model Payout {
+//   id         Int       @id @default(autoincrement())
+//   amount     Float
+//   method     String
+//   reference  String?
+//   createdAt  DateTime  @default(now())
 
+//   artistId   Int
+//   artist     UserInfo  @relation(fields: [artistId], references: [id])
+// }
