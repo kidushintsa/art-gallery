@@ -29,16 +29,19 @@ export async function POST(req: Request) {
     }
 
     // Create or update UserInfo
-    const updatedUserInfo = await prisma.userInfo.upsert({
-      where: { userId: user.id },
+    const updatedUserInfo = await prisma.user.upsert({
+      where: { id: user.id },
       update: { role },
-      create: { userId: user.id, role },
+      create: { id: user.id, role },
     });
 
-    return NextResponse.json({
-      message: "Role updated",
-      userInfo: updatedUserInfo,
-    });
+    return NextResponse.json(
+      {
+        message: "Role updated",
+        userInfo: updatedUserInfo,
+      },
+      { status: 200 }
+    );
   } catch (err) {
     console.error("Error updating role:", err);
     return NextResponse.json(

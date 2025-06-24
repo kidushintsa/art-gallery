@@ -19,8 +19,8 @@ export async function GET() {
     return NextResponse.json({ error: "User not found" }, { status: 404 });
   }
 
-  const userInfo = await prisma.userInfo.findUnique({
-    where: { userId: user.id },
+  const userInfo = await prisma.user.findUnique({
+    where: { id: user.id },
     select: { role: true },
   });
 

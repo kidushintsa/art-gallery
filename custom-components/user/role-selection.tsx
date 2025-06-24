@@ -67,8 +67,10 @@ export default function RoleSelection() {
           window.alert("Role inserted successfully!");
           if (data.role === "artist") {
             router.push("/paymentmethods");
-          } else {
+          } else if (data.role === "customer") {
             router.push("/dashboard/customer");
+          } else {
+            console.log("admin");
           }
         } else {
           const { error } = await res.json();

@@ -13,47 +13,17 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
-
-
-model Account {
-  id                 String  @id @default(cuid())
-  userId             String  @map("user_id")
-  type               String
-  provider           String
-  providerAccountId  String  @map("provider_account_id")
-  refresh_token      String? @db.Text
-  access_token       String? @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String? @db.Text
-  session_state      String?
- 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
-  @@unique([provider, providerAccountId])
-  @@map("accounts")
-}
- 
-model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique @map("session_token")
-  userId       String   @map("user_id")
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
-  @@map("sessions")
-}
  
 model User {
   id            String    @id @default(cuid())
   name          String?
   email         String?   @unique
-  emailVerified DateTime? @map("email_verified")
   image         String?
-  accounts      Account[]
-  sessions      Session[]
-  userInfo      UserInfo?
+  role           Role?
+    payoutMethod  String?
+  payoutAccount String?
+  AccountHolderName String?
+  // userInfo      UserInfo?
 
 //  hashedPassword   String?
 //   role           Role?
@@ -64,17 +34,9 @@ model User {
 //   orders         Order[]     @relation("CustomerOrders")
 //   orderItems     OrderItem[] // For artist earnings tracking
 //   payouts        Payout[]    // For artist payout tracking
-  @@map("users")
+  // @@map("users")
 }
  
-model VerificationToken {
-  identifier String
-  token      String
-  expires    DateTime
- 
-  @@unique([identifier, token])
-  @@map("verification_tokens")
-}
 // model ArtistProfile {
 //   id            Int    @id @default(autoincrement())
 //   userId        String    @unique
@@ -169,21 +131,6 @@ enum Role {
 // }
 
 
-model UserInfo {
-  id               Int    @id @default(autoincrement())
-  userId           String @unique
-  role             Role  
-  // payoutMethod     String?
-//   // payoutAccount    String?
-//   // accountHolderName String?
-
-  user             User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-// //   artworks         Artwork[]   @relation("ArtistArtworks")
-// //   cartItems        CartItem[]  @relation("CustomerCart")
-// //   orders           Order[]     @relation("CustomerOrders")
-// //   orderItems       OrderItem[] // For artist earnings tracking
-// //   payouts          Payout[]    // For artist payout tracking
-}
 
 // enum Role {
 //   CUSTOMER
@@ -254,18 +201,18 @@ model UserInfo {
 //   artist        UserInfo      @relation(fields: [artistId], references: [id])
 // }
 
-// enum PayoutStatus {
-//   UNPAID
-//   PAID
-// }
+enum PayoutStatus {
+  UNPAID
+  PAID
+}
 
-// model Payout {
-//   id         Int       @id @default(autoincrement())
-//   amount     Float
-//   method     String
-//   reference  String?
-//   createdAt  DateTime  @default(now())
+model Payout {
+  id         Int       @id @default(autoincrement())
+  amount     Float
+  method     String
+  reference  String?
+  createdAt  DateTime  @default(now())
 
-//   artistId   Int
-//   artist     UserInfo  @relation(fields: [artistId], references: [id])
-// }
+  artistId   Int
+  artist     User  @relation(fields: [artistId], references: [id])
+}
