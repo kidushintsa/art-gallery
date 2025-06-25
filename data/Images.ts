@@ -1,94 +1,10 @@
 // data/images.js
 import { ImageData } from "@/entities/ImageData";
-const images: ImageData[] = [
-  {
-    id: 1,
-    artist: "abc",
-    price: 10000,
-    src: "/images/img1.jpg",
-    alt: "A peaceful forest",
-    description: "Lush green forest with sunlight peeking through.",
-  },
-  {
-    id: 2,
-    src: "/images/img2.jpg",
-    artist: "abc",
-    price: 5000,
-    alt: "A clear lake",
-    description: "Crystal clear lake surrounded by mountains.",
-  },
-  {
-    id: 3,
-    src: "/images/img3.jpg",
-    artist: "abc",
-    price: 5000,
-    alt: "A clear lake",
-    description: "Crystal clear lake surrounded by mountains.",
-  },
-  {
-    id: 4,
-    src: "/images/img4.jpg",
-    artist: "abc",
-    price: 5000,
-    alt: "A clear lake",
-    description: "Crystal clear lake surrounded by mountains.",
-  },
-  {
-    id: 5,
-    src: "/images/img5.jpg",
-    artist: "abc",
-    price: 5000,
-    alt: "A clear lake",
-    description: "Crystal clear lake surrounded by mountains.",
-  },
-  {
-    id: 6,
-    src: "/images/img6.jpg",
-    artist: "abc",
-    price: 5000,
-    alt: "A clear lake",
-    description: "Crystal clear lake surrounded by mountains.",
-  },
-  {
-    id: 7,
-    src: "/images/img7.jpg",
-    artist: "abc",
-    price: 5000,
-    alt: "A clear lake",
-    description: "Crystal clear lake surrounded by mountains.",
-  },
-  {
-    id: 8,
-    src: "/images/img8.jpg",
-    artist: "abc",
-    price: 5000,
-    alt: "A clear lake",
-    description: "Crystal clear lake surrounded by mountains.",
-  },
-  {
-    id: 9,
-    src: "/images/img9.jpg",
-    artist: "abc",
-    price: 5000,
-    alt: "A clear lake",
-    description: "Crystal clear lake surrounded by mountains.",
-  },
-  {
-    id: 10,
-    src: "/images/img10.jpg",
-    artist: "abc",
-    price: 5000,
-    alt: "A clear lake",
-    description: "Crystal clear lake surrounded by mountains.",
-  },
-  {
-    id: 11,
-    src: "/images/img11.jpg",
-    artist: "abc",
-    price: 5000,
-    alt: "A clear lake",
-    description: "Crystal clear lake surrounded by mountains.",
-  },
-];
+// example usage in your component or hook
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+const res = await fetch(`${baseUrl}/api/artworks`);
+const data = await res.json();
+console.log(data.artworks);
 
+const images: ImageData[] = data.artworks;
 export default images;

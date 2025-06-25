@@ -1,6 +1,6 @@
 import Image from "next/image";
 // import art from "@/public/images/img1.jpg";
-import { Plus, ShoppingCart } from "lucide-react";
+// import { Plus, ShoppingCart } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -18,7 +18,7 @@ const ArtCard = ({
   artist,
   price,
 }: {
-  id?: number;
+  id?: string;
   src: string;
   artist: string;
   price: number;

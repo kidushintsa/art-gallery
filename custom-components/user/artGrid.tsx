@@ -7,14 +7,14 @@ const ArtGrid = () => {
     <>
       {images.length != 0 ? (
         <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 px-2 py-3">
-          {images.map(({ id, alt, artist, description, price, src }) => (
+          {images.map(({ id, title, user, description, price, imageUrl }) => (
             <ArtCard
               id={id}
-              alt={alt}
-              artist={artist}
+              alt={title}
+              artist={user.name}
               description={description}
               price={price}
-              src={src}
+              src={imageUrl}
               key={id}
             />
           ))}
