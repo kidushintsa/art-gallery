@@ -7,10 +7,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { MobileMenu } from "./mobile-menu";
 import { SearchBar } from "./serachBar";
+import { useRouter } from "next/navigation"; // ✅ Use this in Next.js 13+ App Router
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const router = useRouter();
 
   return (
     <header className="sticky top-0 z-40 w-full bg-background/95 backdrop-blur">
@@ -58,7 +60,12 @@ export function Header() {
           </div>
         </div>
         <div className="hidden md:flex items-center gap-4">
-          <Button variant="ghost" size="icon" aria-label="Cart">
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label="Cart"
+            onClick={() => router.push("/cart")}
+          >
             <ShoppingCart className="h-5 w-5" />
           </Button>
           <Button variant="ghost" size="icon" aria-label="Account">
