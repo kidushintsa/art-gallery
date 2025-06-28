@@ -11,7 +11,7 @@ export default function CheckRolePage() {
 
   useEffect(() => {
     const checkRole = async () => {
-      if (status !== "authenticated") return;
+      if (status === "unauthenticated") return router.push("/");
 
       try {
         const res = await fetch("/api/user-role", { cache: "no-store" });

@@ -1,5 +1,7 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { signIn } from "next-auth/react";
 // import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,6 +16,12 @@ export default function Page() {
         <div className="container mx-auto flex items-center justify-between h-16 px-4">
           <Link href="/" className="font-bold text-xl">
             Art Gallery
+          </Link>
+          <Link
+            href="/about"
+            className="text-gray-600 hover:text-gray-900 transition-colors"
+          >
+            About us
           </Link>
         </div>
       </header>
@@ -49,11 +57,12 @@ export default function Page() {
                 discover and purchase unique pieces.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                <Link
+                {/* watch this code below might affect the login process if not working change to link componetn and use href */}
+                <Button
                   className="h-12 bg-white hover:bg-gray-50 text-gray-900 border border-gray-300 cursor-pointer"
-                  // size="lg"
-                  href="/api/auth/signin"
-                  // onClick={() => signIn("google")}
+                  size="lg"
+                  // href="/api/auth/signin"
+                  onClick={() => signIn("google")}
                   // router.push("/role-selection")
                 >
                   <svg className="mr-3 h-5 w-5" viewBox="0 0 24 24">
@@ -75,7 +84,7 @@ export default function Page() {
                     />
                   </svg>
                   Continue with Google
-                </Link>
+                </Button>
               </div>
               <p className="text-xs text-gray-500 mt-4 max-w-md">
                 By continuing, you agree to our{" "}

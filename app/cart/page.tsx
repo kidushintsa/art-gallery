@@ -56,7 +56,7 @@ export default function CartPage() {
   };
 
   const subtotal = cartItems.reduce((sum, item) => sum + item.artwork.price, 0);
-  const shipping = 500;
+  const shipping = 350;
   const total = subtotal + shipping;
 
   return (

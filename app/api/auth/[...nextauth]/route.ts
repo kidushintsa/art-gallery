@@ -46,9 +46,9 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
-
+    // watch this code below redirect this might affect how the signin or signout works
     redirect({ baseUrl }) {
-      return `${baseUrl}/check-role`;
+      return `${baseUrl}/check-role`; // only used for sign-in
     },
   },
 
