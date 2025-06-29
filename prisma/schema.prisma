@@ -23,7 +23,7 @@ model User {
   payoutMethod      String?
   payoutAccount     String?
   AccountHolderName String?
-
+  complain          Complaint[]
   // Relations
   artworks          Artwork[]     // Artist uploads
   cartItems         CartItem[]    // Customer cart
@@ -114,3 +114,15 @@ model Payout {
   artistId   String
   user     User  @relation(fields: [artistId], references: [id])
 }
+model Complaint {
+  id        String   @id @default(cuid())
+  subject   String
+  message   String
+  response  String?     // Optional admin response
+  createdAt DateTime @default(now())
+  category String
+  // Relation to the user who submitted it
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+}
+
