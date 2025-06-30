@@ -81,7 +81,7 @@ export default function ComplainPage() {
       alert("Your complaint has been submitted successfully!");
       form.reset();
     } catch (e) {
-      alert("Failed to submit complaint. ");
+      alert("Failed to submit complaint. " + e);
     } finally {
       setIsSubmitting(false);
     }

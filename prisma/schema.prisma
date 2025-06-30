@@ -45,7 +45,7 @@ model Artwork {
   description String
   price       Float
   imageUrl    String
-  approved    Boolean   @default(false)
+  status    Status? @default(PENDING)
   createdAt   DateTime  @default(now())
   user      User  @relation(fields: [artistId], references: [id])
   artistId    String
@@ -53,6 +53,11 @@ model Artwork {
   cartItems   CartItem[]
 }
 
+enum Status {
+  APPROVED
+  REJECTED
+  PENDING
+}
 model CartItem {
   id          String    @id @default(cuid())
   addedAt    DateTime  @default(now())
