@@ -13,10 +13,11 @@ import {
   ChevronUp,
 } from "lucide-react";
 import { formatDate } from "@/lib/utils";
+import { User } from "./artwork-approval";
 
 interface OrderItem {
-  title: string;
-  artistName: string;
+  artwork: { title: string };
+  user: User;
   price: number;
 }
 
@@ -25,8 +26,8 @@ interface Order {
   totalAmount: number;
   paymentStatus: string;
   createdAt: string;
-  userEmail: string;
-  items: OrderItem[];
+  orderItem: OrderItem[];
+  user: User;
 }
 
 interface OrdersManagementProps {
@@ -84,7 +85,7 @@ export default function OrdersManagement({ orders }: OrdersManagementProps) {
             <div className="flex flex-wrap gap-4 text-sm text-gray-500">
               <div className="flex items-center gap-1">
                 <Mail className="w-4 h-4" />
-                <span>{order.userEmail}</span>
+                <span>{order.user.email}</span>
               </div>
               <div className="flex items-center gap-1">
                 <DollarSign className="w-4 h-4" />
@@ -97,7 +98,8 @@ export default function OrdersManagement({ orders }: OrdersManagementProps) {
               <div className="flex items-center gap-1">
                 <Package className="w-4 h-4" />
                 <span>
-                  {order.items.length} item{order.items.length !== 1 ? "s" : ""}
+                  {order.orderItem.length} item
+                  {order.orderItem.length !== 1 ? "s" : ""}
                 </span>
               </div>
             </div>
@@ -121,17 +123,17 @@ export default function OrdersManagement({ orders }: OrdersManagementProps) {
               <div className="mt-4 space-y-3">
                 <h4 className="font-medium text-gray-900">Order Items:</h4>
                 <div className="space-y-2">
-                  {order.items.map((item, index) => (
+                  {order.orderItem.map((item, index) => (
                     <div
                       key={index}
                       className="flex justify-between items-center p-3 bg-gray-50 rounded-lg"
                     >
                       <div>
                         <p className="font-medium text-gray-900">
-                          {item.title}
+                          {item.artwork.title}
                         </p>
                         <p className="text-sm text-gray-600">
-                          by {item.artistName}
+                          by {item.user.name}
                         </p>
                       </div>
                       <div className="text-right">

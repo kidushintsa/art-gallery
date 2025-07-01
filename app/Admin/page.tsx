@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Card,
@@ -15,103 +15,45 @@ import UsersManagement from "@/custom-components/admin/users-management";
 import ComplaintsManagement from "@/custom-components/admin/complaints-managment";
 import OrdersManagement from "@/custom-components/admin/order-management";
 
-// Mock data - replace with real data fetching
-const mockArtworks = [
-  {
-    id: "1",
-    title: "Sunset Dreams",
-    imageUrl: "/placeholder.svg?height=100&width=100",
-    artistName: "John Doe",
-    price: 15000,
-    createdAt: "2024-01-15T10:30:00Z",
-    status: "pending",
-  },
-  {
-    id: "2",
-    title: "Abstract Thoughts",
-    imageUrl: "/placeholder.svg?height=100&width=100",
-    artistName: "Jane Smith",
-    price: 25000,
-    createdAt: "2024-01-14T14:20:00Z",
-    status: "pending",
-  },
-];
-
-const mockComplaints = [
-  {
-    id: "1",
-    subject: "Payment Issue",
-    category: "Payment Problems",
-    message: "My payment was charged but order not confirmed",
-    userName: "Alice Johnson",
-    userEmail: "alice@example.com",
-    createdAt: "2024-01-16T09:15:00Z",
-    response: "",
-    status: "pending",
-  },
-  {
-    id: "2",
-    subject: "Damaged Artwork",
-    category: "Product Quality",
-    message: "The artwork arrived with scratches on the frame",
-    userName: "Bob Wilson",
-    userEmail: "bob@example.com",
-    createdAt: "2024-01-15T16:45:00Z",
-    response: "",
-    status: "pending",
-  },
-];
-
-const mockUsers = [
-  {
-    id: "1",
-    name: "John Doe",
-    email: "john@example.com",
-    role: "artist",
-    createdAt: "2024-01-10T08:00:00Z",
-  },
-  {
-    id: "2",
-    name: "Jane Smith",
-    email: "jane@example.com",
-    role: "customer",
-    createdAt: "2024-01-12T10:30:00Z",
-  },
-  {
-    id: "3",
-    name: "Alice Johnson",
-    email: "alice@example.com",
-    role: "customer",
-    createdAt: "2024-01-14T14:15:00Z",
-  },
-];
-
-const mockOrders = [
-  {
-    id: "1",
-    totalAmount: 45000,
-    paymentStatus: "completed",
-    createdAt: "2024-01-16T11:30:00Z",
-    userEmail: "alice@example.com",
-    items: [
-      { title: "Sunset Dreams", artistName: "John Doe", price: 15000 },
-      { title: "Mountain View", artistName: "Jane Smith", price: 30000 },
-    ],
-  },
-  {
-    id: "2",
-    totalAmount: 25000,
-    paymentStatus: "pending",
-    createdAt: "2024-01-15T09:20:00Z",
-    userEmail: "bob@example.com",
-    items: [
-      { title: "Abstract Thoughts", artistName: "Jane Smith", price: 25000 },
-    ],
-  },
-];
-
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState("artworks");
+  const [artworks, setArtworks] = useState([]);
+  const [complaints, setComplaints] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [orders, setOrders] = useState([]);
+
+  const fetchData = async () => {
+    const [artworksRes, complaintsRes, usersRes, ordersRes] = await Promise.all(
+      [
+        fetch("/api/admin/pending-artworks"),
+        fetch("/api/admin/complaints"),
+        fetch("/api/admin/users"),
+        fetch("/api/admin/orders"),
+      ]
+    );
+
+    const [artworksData, complaintsData, usersData, ordersData] =
+      await Promise.all([
+        artworksRes.json(),
+        complaintsRes.json(),
+        usersRes.json(),
+        ordersRes.json(),
+      ]);
+
+    console.log("Artworks:", artworksData);
+    console.log("Complaints:", complaintsData);
+    console.log("Users:", usersData);
+    console.log("Orders:", ordersData);
+
+    setArtworks(artworksData);
+    setComplaints(complaintsData);
+    setUsers(usersData);
+    setOrders(ordersData);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -128,49 +70,70 @@ export default function AdminPage() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card>
+          <Card className="border-orange-200 bg-gradient-to-br from-orange-50 to-orange-100">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
+              <CardTitle className="text-sm font-medium text-orange-800">
                 Pending Artworks
               </CardTitle>
-              <Palette className="h-4 w-4 text-muted-foreground" />
+              <div className="w-8 h-8 bg-orange-500 rounded-xl flex items-center justify-center">
+                <Palette className="h-4 w-4 text-white" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{mockArtworks.length}</div>
+              <div className="text-2xl font-bold text-orange-900">
+                {artworks.length}
+              </div>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-red-200 bg-gradient-to-br from-red-50 to-red-100">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
+              <CardTitle className="text-sm font-medium text-red-800">
                 Open Complaints
               </CardTitle>
-              <MessageSquare className="h-4 w-4 text-muted-foreground" />
+              <div className="w-8 h-8 bg-red-500 rounded-xl flex items-center justify-center">
+                <MessageSquare className="h-4 w-4 text-white" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{mockComplaints.length}</div>
+              <div className="text-2xl font-bold text-red-900">
+                {complaints.length}
+              </div>
+              <p className="text-xs text-red-600 mt-1">Need attention</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-blue-200 bg-gradient-to-br from-blue-50 to-blue-100">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Users</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-sm font-medium text-blue-800">
+                Total Users
+              </CardTitle>
+              <div className="w-8 h-8 bg-blue-500 rounded-xl flex items-center justify-center">
+                <Users className="h-4 w-4 text-white" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{mockUsers.length}</div>
+              <div className="text-2xl font-bold text-blue-900">
+                {users.length}
+              </div>
+              <p className="text-xs text-blue-600 mt-1">Registered members</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-green-200 bg-gradient-to-br from-green-50 to-green-100">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
+              <CardTitle className="text-sm font-medium text-green-800">
                 Total Orders
               </CardTitle>
-              <ShoppingBag className="h-4 w-4 text-muted-foreground" />
+              <div className="w-8 h-8 bg-green-500 rounded-xl flex items-center justify-center">
+                <ShoppingBag className="h-4 w-4 text-white" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{mockOrders.length}</div>
+              <div className="text-2xl font-bold text-green-900">
+                {orders.length}
+              </div>
+              <p className="text-xs text-green-600 mt-1">All time sales</p>
             </CardContent>
           </Card>
         </div>
@@ -197,7 +160,7 @@ export default function AdminPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <ArtworkApproval artworks={mockArtworks} />
+                <ArtworkApproval artworks={artworks} refresh={fetchData} />
               </CardContent>
             </Card>
           </TabsContent>
@@ -211,7 +174,10 @@ export default function AdminPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <ComplaintsManagement complaints={mockComplaints} />
+                <ComplaintsManagement
+                  complaints={complaints}
+                  refresh={fetchData}
+                />
               </CardContent>
             </Card>
           </TabsContent>
@@ -225,7 +191,7 @@ export default function AdminPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <UsersManagement users={mockUsers} />
+                <UsersManagement users={users} />
               </CardContent>
             </Card>
           </TabsContent>
@@ -239,7 +205,7 @@ export default function AdminPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <OrdersManagement orders={mockOrders} />
+                <OrdersManagement orders={orders} />
               </CardContent>
             </Card>
           </TabsContent>

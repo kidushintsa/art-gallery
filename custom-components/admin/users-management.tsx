@@ -185,7 +185,11 @@ export default function UsersManagement({ users }: UsersManagementProps) {
                     {user.role}
                   </Badge>
                 </TableCell>
-                <TableCell>{formatDate(user.createdAt)}</TableCell>
+                <TableCell>
+                  {user.createdAt !== null
+                    ? formatDate(user.createdAt)
+                    : "no date"}
+                </TableCell>
                 <TableCell>
                   <Select
                     value={user.role}

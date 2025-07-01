@@ -126,8 +126,13 @@ model Complaint {
   response  String?     // Optional admin response
   createdAt DateTime @default(now())
   category String
+  status   categoryStatus? @default(PENDING)
   // Relation to the user who submitted it
   userId    String
   user      User     @relation(fields: [userId], references: [id])
 }
 
+enum categoryStatus {
+  PENDING
+  HANDLED
+}

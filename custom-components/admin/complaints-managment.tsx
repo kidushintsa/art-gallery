@@ -7,48 +7,79 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar, Mail, User, Send } from "lucide-react";
 import { formatDate } from "@/lib/utils";
+import { User as MyUser } from "./artwork-approval";
 
 interface Complaint {
   id: string;
   subject: string;
   category: string;
   message: string;
-  userName: string;
-  userEmail: string;
   createdAt: string;
   response: string;
   status: string;
+  user: MyUser;
 }
 
 interface ComplaintsManagementProps {
   complaints: Complaint[];
+  refresh: () => Promise<void>;
 }
 
 export default function ComplaintsManagement({
   complaints,
+  refresh,
 }: ComplaintsManagementProps) {
   const [complaintList, setComplaintList] = useState(complaints);
   const [responses, setResponses] = useState<Record<string, string>>({});
+  const [loadingIds, setLoadingIds] = useState<Set<string>>(new Set());
 
   const handleResponseChange = (id: string, response: string) => {
     setResponses((prev) => ({ ...prev, [id]: response }));
   };
 
-  const handleSubmitResponse = (id: string) => {
+  const handleSubmitResponse = async (id: string) => {
+    if (loadingIds.has(id)) return;
     const response = responses[id];
     if (!response?.trim()) return;
 
-    setComplaintList((prev) =>
-      prev.map((complaint) =>
-        complaint.id === id
-          ? { ...complaint, response, status: "handled" }
-          : complaint
-      )
-    );
+    setLoadingIds((prev) => new Set(prev).add(id));
 
-    setResponses((prev) => ({ ...prev, [id]: "" }));
-    console.log(`Response submitted for complaint ${id}:`, response);
-    // In real app: API call to save response
+    try {
+      const res = await fetch("/api/admin/complaints/response", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ complaintId: id, response }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Failed to send response");
+      }
+
+      // Optimistically update UI
+      setComplaintList((prev) =>
+        prev.map((complaint) =>
+          complaint.id === id
+            ? { ...complaint, response, status: "handled" }
+            : complaint
+        )
+      );
+      setResponses((prev) => ({ ...prev, [id]: "" }));
+      console.log(`Response submitted for complaint ${id}:`, response);
+
+      await refresh();
+    } catch (error) {
+      console.error("Failed to send response:", error);
+      // Optional: show toast/error message
+    } finally {
+      setLoadingIds((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(id);
+        return newSet;
+      });
+    }
   };
 
   if (complaintList.length === 0) {
@@ -83,11 +114,11 @@ export default function ComplaintsManagement({
             <div className="flex flex-wrap gap-4 text-sm text-gray-500">
               <div className="flex items-center gap-1">
                 <User className="w-4 h-4" />
-                <span>{complaint.userName}</span>
+                <span>{complaint.user.name}</span>
               </div>
               <div className="flex items-center gap-1">
                 <Mail className="w-4 h-4" />
-                <span>{complaint.userEmail}</span>
+                <span>{complaint.user.email}</span>
               </div>
               <div className="flex items-center gap-1">
                 <Calendar className="w-4 h-4" />
@@ -137,7 +168,10 @@ export default function ComplaintsManagement({
                 />
                 <Button
                   onClick={() => handleSubmitResponse(complaint.id)}
-                  disabled={!responses[complaint.id]?.trim()}
+                  disabled={
+                    !responses[complaint.id]?.trim() ||
+                    loadingIds.has(complaint.id)
+                  }
                   className="bg-blue-600 hover:bg-blue-700"
                 >
                   <Send className="w-4 h-4 mr-2" />

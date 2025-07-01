@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `complaint` MODIFY `status` ENUM('PENDING', 'HANDLED') NULL DEFAULT 'PENDING';
