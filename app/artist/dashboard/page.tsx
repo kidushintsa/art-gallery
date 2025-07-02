@@ -14,58 +14,48 @@ import UploadArtwork from "@/custom-components/artist/uploadArtworks";
 import MyArtworks from "@/custom-components/artist/myArtworks";
 import SalesHistory, { Sale } from "@/custom-components/artist/salesHistory"; // import Sale type here if exported
 import ArtistOverview from "@/custom-components/artist/artworkOverview";
-
-// Mock artworks data (replace with real API if needed)
-const mockArtworks = [
-  {
-    id: "1",
-    title: "Sunset Dreams",
-    imageUrl: "/placeholder.svg?height=100&width=100",
-    price: 15000,
-    status: "APPROVED" as const,
-    category: "PAINTING" as const,
-    description: "A beautiful sunset painting",
-    createdAt: "2024-01-15T10:30:00Z",
-    sold: true,
-  },
-  {
-    id: "2",
-    title: "Abstract Thoughts",
-    imageUrl: "/placeholder.svg?height=100&width=100",
-    price: 25000,
-    status: "PENDING" as const,
-    category: "PAINTING" as const,
-    description: "Modern abstract art piece",
-    createdAt: "2024-01-14T14:20:00Z",
-    sold: false,
-  },
-  {
-    id: "3",
-    title: "Mountain View",
-    imageUrl: "/placeholder.svg?height=100&width=100",
-    price: 30000,
-    status: "APPROVED" as const,
-    category: "PHOTOGRAPHY" as const,
-    description: "Stunning mountain landscape",
-    createdAt: "2024-01-13T09:15:00Z",
-    sold: true,
-  },
-];
+import { updatedData } from "@/custom-components/artist/artworkCard";
+interface MyArtwork {
+  id: string;
+  title: string;
+  description: string | undefined;
+  imageUrl: string;
+  price: number;
+  category: "PAINTING" | "SCULPTURE" | "PHOTOGRAPHY"; // adjust as per your schema
+  status: "PENDING" | "APPROVED" | "REJECTED"; // adjust as per your schema
+  sold: boolean;
+  createdAt: string; // or `Date` depending on how you're handling it
+  updatedAt: string;
+  userId: string;
+}
 
 export default function ArtistDashboard() {
   const [activeTab, setActiveTab] = useState("overview");
-  const [artworks, setArtworks] = useState(mockArtworks);
+  const [artworks, setArtworks] = useState<MyArtwork[]>([]);
   const [salesHistory, setSalesHistory] = useState<Sale[]>([]);
 
-  // Fetch sales history data on mount
+  // ✅ Fetch artworks for the current artist by session email
+  const fetchArtworks = async () => {
+    try {
+      const res = await fetch("/api/artworks/my");
+      if (!res.ok) throw new Error("Failed to fetch artworks");
+      const data = await res.json();
+      setArtworks(data);
+    } catch (err) {
+      console.error("Error fetching artworks:", err);
+      setArtworks([]);
+    }
+  };
+
+  // Fetch on mount
   useEffect(() => {
+    fetchArtworks();
     async function fetchSalesHistory() {
       try {
         const res = await fetch("/api/sales-history");
         if (!res.ok) throw new Error("Failed to fetch sales history");
         const data = await res.json();
 
-        // Map API response to match Sale interface
         const mappedData: Sale[] = data.map((item: Sale) => ({
           id: item.id,
           artistCut: item.artistCut,
@@ -103,33 +93,48 @@ export default function ArtistDashboard() {
     }
     fetchSalesHistory();
   }, []);
-
-  // Handlers for artwork upload, update, delete
-  const handleArtworkUpload = (artworkData: any) => {
-    const newArtwork = {
-      ...artworkData,
-      id: Date.now().toString(),
-      status: "PENDING" as const,
-      createdAt: new Date().toISOString(),
-      sold: false,
-    };
-    setArtworks((prev) => [newArtwork, ...prev]);
+  // ✅ Call after upload to refresh
+  const handleArtworkUpload = async () => {
+    await fetchArtworks();
     setActiveTab("artworks");
   };
 
-  const handleArtworkUpdate = (id: string, updatedData: any) => {
-    setArtworks((prev) =>
-      prev.map((artwork) =>
-        artwork.id === id ? { ...artwork, ...updatedData } : artwork
-      )
-    );
+  const handleArtworkUpdate = async (id: string, updatedData: updatedData) => {
+    try {
+      const res = await fetch(`/api/artworks/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedData),
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to update artwork");
+      }
+
+      await fetchArtworks(); // Refresh with updated data
+    } catch (error) {
+      console.error("Error updating artwork:", error);
+    }
   };
 
-  const handleArtworkDelete = (id: string) => {
-    setArtworks((prev) => prev.filter((artwork) => artwork.id !== id));
+  const handleArtworkDelete = async (id: string) => {
+    try {
+      const res = await fetch(`/api/artworks/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to delete artwork");
+      }
+
+      await fetchArtworks(); // Refresh the artworks list
+    } catch (error) {
+      console.error("Error deleting artwork:", error);
+    }
   };
 
-  // Calculate current stats using artworks and salesHistory
   const currentStats = {
     totalArtworks: artworks.length,
     totalSold: artworks.filter((a) => a.sold).length,

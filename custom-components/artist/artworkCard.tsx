@@ -44,9 +44,15 @@ interface Artwork {
   sold: boolean;
 }
 
+export interface updatedData {
+  title: string;
+  price: number;
+  category: "PAINTING" | "SCULPTURE" | "PHOTOGRAPHY";
+  description: string | "";
+}
 interface ArtworkCardProps {
   artwork: Artwork;
-  onUpdate: (id: string, updatedData: any) => void;
+  onUpdate: (id: string, updatedData: updatedData) => void;
   onDelete: (id: string) => void;
 }
 
@@ -203,7 +209,13 @@ export default function ArtworkCard({
                 <Select
                   value={editData.category}
                   onValueChange={(value) =>
-                    setEditData({ ...editData, category: value as any })
+                    setEditData({
+                      ...editData,
+                      category: value as
+                        | "PAINTING"
+                        | "SCULPTURE"
+                        | "PHOTOGRAPHY",
+                    })
                   }
                 >
                   <SelectTrigger>

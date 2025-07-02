@@ -11,9 +11,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Search, Plus, Filter } from "lucide-react";
-import ArtworkCard from "./artworkCard";
+import ArtworkCard, { updatedData } from "./artworkCard";
 
-interface Artwork {
+export interface Artwork {
   id: string;
   title: string;
   imageUrl: string;
@@ -27,7 +27,7 @@ interface Artwork {
 
 interface MyArtworksProps {
   artworks: Artwork[];
-  onUpdate: (id: string, updatedData: any) => void;
+  onUpdate: (id: string, updatedData: updatedData) => void;
   onDelete: (id: string) => void;
   onUploadClick: () => void;
 }

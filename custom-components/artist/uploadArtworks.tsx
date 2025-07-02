@@ -36,7 +36,7 @@ const formSchema = z.object({
 });
 
 interface UploadArtworkProps {
-  onUpload: (artworkData: any) => void;
+  onUpload: () => void;
 }
 
 export default function UploadArtwork({ onUpload }: UploadArtworkProps) {
@@ -96,8 +96,8 @@ export default function UploadArtwork({ onUpload }: UploadArtworkProps) {
 
       if (!response.ok) throw new Error("Failed to save artwork");
 
-      const savedArtwork = await response.json();
-      onUpload(savedArtwork); // Add to UI list
+      // const savedArtwork = await response.json();
+      onUpload(); // Add to UI list
 
       form.reset();
       setFile(null);
