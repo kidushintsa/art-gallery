@@ -19,7 +19,7 @@ export default function CheckRolePage() {
 
         if (res.ok && data.role) {
           if (data.role === "ARTIST") {
-            router.replace("/dashboard/artist");
+            router.replace("/artist/dashboard");
           } else if (data.role === "CUSTOMER") {
             router.replace("/dashboard/customer");
           } else {

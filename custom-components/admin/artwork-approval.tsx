@@ -102,7 +102,7 @@ export default function ArtworkApproval({
               <h3 className="text-lg font-semibold text-gray-900">
                 {artwork.title}
               </h3>
-              <Badge variant="secondary" className="w-fit">
+              <Badge variant="secondary" className="w-fit bg-orange-100">
                 {artwork.status}
               </Badge>
             </div>

@@ -87,16 +87,6 @@ export default function UsersManagement({ users }: UsersManagementProps) {
     }
   };
 
-  const handleRoleChange = (userId: string, newRole: string) => {
-    setUserList((prev) =>
-      prev.map((user) =>
-        user.id === userId ? { ...user, role: newRole } : user
-      )
-    );
-    console.log(`Changed user ${userId} role to ${newRole}`);
-    // In real app: API call to update user role
-  };
-
   const getRoleBadgeColor = (role: string) => {
     switch (role) {
       case "admin":
@@ -129,9 +119,8 @@ export default function UsersManagement({ users }: UsersManagementProps) {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Roles</SelectItem>
-            <SelectItem value="customer">Customer</SelectItem>
-            <SelectItem value="artist">Artist</SelectItem>
-            <SelectItem value="admin">Admin</SelectItem>
+            <SelectItem value="CUSTOMER">Customer</SelectItem>
+            <SelectItem value="ARTIST">Artist</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -172,7 +161,6 @@ export default function UsersManagement({ users }: UsersManagementProps) {
                   <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
               </TableHead>
-              <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -189,23 +177,6 @@ export default function UsersManagement({ users }: UsersManagementProps) {
                   {user.createdAt !== null
                     ? formatDate(user.createdAt)
                     : "no date"}
-                </TableCell>
-                <TableCell>
-                  <Select
-                    value={user.role}
-                    onValueChange={(newRole) =>
-                      handleRoleChange(user.id, newRole)
-                    }
-                  >
-                    <SelectTrigger className="w-32">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="customer">Customer</SelectItem>
-                      <SelectItem value="artist">Artist</SelectItem>
-                      <SelectItem value="admin">Admin</SelectItem>
-                    </SelectContent>
-                  </Select>
                 </TableCell>
               </TableRow>
             ))}
