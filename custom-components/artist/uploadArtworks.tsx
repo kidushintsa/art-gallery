@@ -63,10 +63,10 @@ export default function UploadArtwork({ onUpload }: UploadArtworkProps) {
     setIsSubmitting(true);
 
     try {
-      // Upload to Cloudinary manually
+      // Upload to Cloudinary
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("upload_preset", "artworks"); // your unsigned preset
+      formData.append("upload_preset", "artworks");
 
       const cloudRes = await fetch(
         `https://api.cloudinary.com/v1_1/duaaikjhp/image/upload`,
@@ -77,28 +77,35 @@ export default function UploadArtwork({ onUpload }: UploadArtworkProps) {
       );
 
       const cloudData = await cloudRes.json();
-      if (!cloudData.secure_url) throw new Error("Upload failed");
+      if (!cloudData.secure_url) throw new Error("Cloudinary upload failed");
 
-      const artworkData = {
-        title: values.title,
-        price: values.price,
-        category: values.category,
-        description: values.description,
-        imageUrl: cloudData.secure_url, // ✅ fixed: use full URL
-        status: "PENDING",
-        createdAt: new Date().toISOString(),
-      };
+      // Send to API route
+      const response = await fetch("/api/artworks/upload", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title: values.title,
+          price: values.price,
+          category: values.category,
+          description: values.description,
+          imageUrl: cloudData.secure_url,
+        }),
+      });
 
-      onUpload(artworkData);
+      if (!response.ok) throw new Error("Failed to save artwork");
+
+      const savedArtwork = await response.json();
+      onUpload(savedArtwork); // Add to UI list
 
       form.reset();
       setFile(null);
       setPreviewUrl(null);
-
       alert("Uploaded successfully!");
     } catch (err) {
       console.error("Error uploading:", err);
-      alert("Failed to upload. Please try again.");
+      alert("Upload failed. Please try again.");
     } finally {
       setIsSubmitting(false);
     }

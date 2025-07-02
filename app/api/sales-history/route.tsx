@@ -14,53 +14,35 @@ export async function GET() {
   const email = session.user.email;
 
   try {
-    // Get the logged-in artist's sales
-    const user = await prisma.user.findUnique({
-      where: { email },
+    const orderItems = await prisma.orderItem.findMany({
+      where: {
+        user: {
+          email,
+        },
+        payoutStatus: {
+          in: ["PAID", "UNPAID"],
+        },
+      },
       include: {
-        orders: {
+        artwork: {
           include: {
-            orderItems: {
-              where: {
-                payoutStatus: {
-                  in: ["PAID", "UNPAID"],
-                },
-                artwork: {
-                  user: {
-                    email,
-                  },
-                },
-              },
-              include: {
-                artwork: true,
-                order: {
-                  include: {
-                    user: true,
-                  },
-                },
-              },
-            },
+            user: true, // artist info
           },
+        },
+        order: {
+          include: {
+            user: true, // customer info
+          },
+        },
+      },
+      orderBy: {
+        order: {
+          createdAt: "desc",
         },
       },
     });
 
-    const salesHistory = user?.orders.flatMap(
-      (order) =>
-        order.orderItems.map((item) => ({
-          id: item.id,
-          artworkTitle: item.artwork.title,
-          artworkId: item.artwork.id,
-          dateSold: item.order.createdAt,
-          salePrice: item.price,
-          artistCut: item.artistCut,
-          payoutStatus: item.payoutStatus,
-          customerName: item.order.user.name,
-          orderId: item.order.id,
-        })) || []
-    );
-
-    return NextResponse.json(salesHistory);
+    return NextResponse.json(orderItems);
   } catch (error) {
     console.error("Failed to fetch sales history:", error);
     return NextResponse.json({ error: "Server error" }, { status: 500 });

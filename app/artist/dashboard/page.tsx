@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -12,18 +12,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Palette, Package, Clock, DollarSign } from "lucide-react";
 import UploadArtwork from "@/custom-components/artist/uploadArtworks";
 import MyArtworks from "@/custom-components/artist/myArtworks";
-import SalesHistory from "@/custom-components/artist/salesHistory";
+import SalesHistory, { Sale } from "@/custom-components/artist/salesHistory"; // import Sale type here if exported
 import ArtistOverview from "@/custom-components/artist/artworkOverview";
 
-// Mock data - replace with real API calls
-const mockArtistStats = {
-  totalArtworks: 12,
-  totalSold: 8,
-  pendingApproval: 2,
-  approved: 10,
-  totalEarnings: 96000, // 80% of sales
-};
-
+// Mock artworks data (replace with real API if needed)
 const mockArtworks = [
   {
     id: "1",
@@ -60,35 +52,59 @@ const mockArtworks = [
   },
 ];
 
-const mockSalesHistory = [
-  {
-    id: "1",
-    artworkTitle: "Sunset Dreams",
-    artworkId: "1",
-    dateSold: "2024-01-16T11:30:00Z",
-    salePrice: 15000,
-    artistCut: 12000,
-    payoutStatus: "PAID" as const,
-    customerName: "Alice Johnson",
-    orderId: "order1",
-  },
-  {
-    id: "2",
-    artworkTitle: "Mountain View",
-    artworkId: "3",
-    dateSold: "2024-01-15T09:20:00Z",
-    salePrice: 30000,
-    artistCut: 24000,
-    payoutStatus: "UNPAID" as const,
-    customerName: "Bob Wilson",
-    orderId: "order2",
-  },
-];
-
 export default function ArtistDashboard() {
   const [activeTab, setActiveTab] = useState("overview");
   const [artworks, setArtworks] = useState(mockArtworks);
+  const [salesHistory, setSalesHistory] = useState<Sale[]>([]);
 
+  // Fetch sales history data on mount
+  useEffect(() => {
+    async function fetchSalesHistory() {
+      try {
+        const res = await fetch("/api/sales-history");
+        if (!res.ok) throw new Error("Failed to fetch sales history");
+        const data = await res.json();
+
+        // Map API response to match Sale interface
+        const mappedData: Sale[] = data.map((item: Sale) => ({
+          id: item.id,
+          artistCut: item.artistCut,
+          price: item.price ?? 0,
+          payoutStatus: item.payoutStatus,
+          artwork: {
+            id: item.artwork.id,
+            title: item.artwork.title,
+            imageUrl: item.artwork.imageUrl,
+            user: {
+              id: item.artwork.user.id,
+              name: item.artwork.user.name,
+              email: item.artwork.user.email,
+              payoutMethod: item.artwork.user.payoutMethod,
+              payoutAccount: item.artwork.user.payoutAccount,
+              AccountHolderName: item.artwork.user.AccountHolderName,
+            },
+          },
+          order: {
+            id: item.order.id,
+            totalAmount: item.order.totalAmount,
+            createdAt: item.order.createdAt,
+            user: {
+              name: item.order.user.name,
+              email: item.order.user.email,
+            },
+          },
+        }));
+
+        setSalesHistory(mappedData);
+      } catch (error) {
+        console.error("Error fetching sales history:", error);
+        setSalesHistory([]);
+      }
+    }
+    fetchSalesHistory();
+  }, []);
+
+  // Handlers for artwork upload, update, delete
   const handleArtworkUpload = (artworkData: any) => {
     const newArtwork = {
       ...artworkData,
@@ -98,8 +114,7 @@ export default function ArtistDashboard() {
       sold: false,
     };
     setArtworks((prev) => [newArtwork, ...prev]);
-    console.log("New artwork uploaded:", newArtwork);
-    setActiveTab("artworks"); // Switch to artworks tab to see the new upload
+    setActiveTab("artworks");
   };
 
   const handleArtworkUpdate = (id: string, updatedData: any) => {
@@ -108,24 +123,19 @@ export default function ArtistDashboard() {
         artwork.id === id ? { ...artwork, ...updatedData } : artwork
       )
     );
-    console.log("Artwork updated:", id, updatedData);
   };
 
   const handleArtworkDelete = (id: string) => {
     setArtworks((prev) => prev.filter((artwork) => artwork.id !== id));
-    console.log("Artwork deleted:", id);
   };
 
-  // Calculate updated stats
+  // Calculate current stats using artworks and salesHistory
   const currentStats = {
     totalArtworks: artworks.length,
     totalSold: artworks.filter((a) => a.sold).length,
     pendingApproval: artworks.filter((a) => a.status === "PENDING").length,
     approved: artworks.filter((a) => a.status === "APPROVED").length,
-    totalEarnings: mockSalesHistory.reduce(
-      (sum, sale) => sum + sale.artistCut,
-      0
-    ),
+    totalEarnings: salesHistory.reduce((sum, sale) => sum + sale.artistCut, 0),
   };
 
   return (
@@ -285,7 +295,7 @@ export default function ArtistDashboard() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <SalesHistory salesHistory={mockSalesHistory} />
+                <SalesHistory salesHistory={salesHistory} />
               </CardContent>
             </Card>
           </TabsContent>

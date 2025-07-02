@@ -5,16 +5,33 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar, DollarSign, User, Package, TrendingUp } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 
-interface Sale {
+export interface Sale {
   id: string;
-  artworkTitle: string;
-  artworkId: string;
-  dateSold: string;
-  salePrice: number;
   artistCut: number;
+  price: number;
   payoutStatus: "PAID" | "UNPAID";
-  customerName: string;
-  orderId: string;
+  artwork: {
+    id: string;
+    title: string;
+    imageUrl: string;
+    user: {
+      id: string;
+      name: string | null;
+      email: string | null;
+      payoutMethod: string | null;
+      payoutAccount: string | null;
+      AccountHolderName: string | null;
+    };
+  };
+  order: {
+    id: string;
+    totalAmount: number;
+    createdAt: string;
+    user: {
+      name: string | null;
+      email: string | null;
+    };
+  };
 }
 
 interface SalesHistoryProps {
@@ -131,7 +148,7 @@ export default function SalesHistory({ salesHistory }: SalesHistoryProps) {
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <h4 className="font-semibold text-lg text-gray-900">
-                      {sale.artworkTitle}
+                      {sale.artwork.title}
                     </h4>
                     {getPayoutStatusBadge(sale.payoutStatus)}
                   </div>
@@ -139,22 +156,22 @@ export default function SalesHistory({ salesHistory }: SalesHistoryProps) {
                   <div className="flex flex-wrap gap-4 text-sm text-gray-600">
                     <div className="flex items-center gap-1">
                       <Calendar className="w-3 h-3" />
-                      <span>Sold: {formatDate(sale.dateSold)}</span>
+                      <span>Sold: {formatDate(sale.order.createdAt)}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <User className="w-3 h-3" />
-                      <span>Customer: {sale.customerName}</span>
+                      <span>Customer: {sale.order.user.name}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <Package className="w-3 h-3" />
-                      <span>Order: #{sale.orderId}</span>
+                      <span>Order: #{sale.order.id}</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="text-right space-y-1">
                   <div className="text-sm text-gray-600">
-                    Sale Price: {sale.salePrice.toLocaleString()} ETB
+                    Sale Price: {sale.price.toLocaleString()} ETB
                   </div>
                   <div className="text-lg font-semibold text-green-600">
                     Your Cut: {sale.artistCut.toLocaleString()} ETB

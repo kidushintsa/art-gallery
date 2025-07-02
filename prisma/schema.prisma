@@ -48,7 +48,7 @@ model Artwork {
   status    Status? @default(PENDING)
   createdAt   DateTime  @default(now())
     purchased  Boolean @default(false)
-    category   ArtworkCategory
+    category   ArtworkCategory?
 
   user      User  @relation(fields: [artistId], references: [id])
   artistId    String
