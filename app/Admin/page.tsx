@@ -9,7 +9,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Palette, MessageSquare, Users, ShoppingBag } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Palette,
+  MessageSquare,
+  Users,
+  ShoppingBag,
+  LogOut,
+} from "lucide-react";
+import { signOut } from "next-auth/react";
 import ArtworkApproval from "@/custom-components/admin/artwork-approval";
 import UsersManagement from "@/custom-components/admin/users-management";
 import ComplaintsManagement from "@/custom-components/admin/complaints-managment";
@@ -55,17 +63,31 @@ export default function AdminPage() {
     fetchData();
   }, []);
 
+  const handleLogout = () => {
+    signOut({ callbackUrl: "/" });
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="container mx-auto px-4 max-w-7xl">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Admin Dashboard
-          </h1>
-          <p className="text-gray-600">
-            Manage artworks, complaints, users, and orders
-          </p>
+        <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              Admin Dashboard
+            </h1>
+            <p className="text-gray-600">
+              Manage artworks, complaints, users, and orders
+            </p>
+          </div>
+          <Button
+            onClick={handleLogout}
+            variant="outline"
+            className="text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200 w-fit bg-transparent"
+          >
+            <LogOut className="h-4 w-4 mr-2" />
+            Logout
+          </Button>
         </div>
 
         {/* Stats Cards */}

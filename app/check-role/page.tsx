@@ -22,6 +22,8 @@ export default function CheckRolePage() {
             router.replace("/artist/dashboard");
           } else if (data.role === "CUSTOMER") {
             router.replace("/dashboard/customer");
+          } else if (data.role === "ADMIN") {
+            router.replace("/admin");
           } else {
             router.replace("/role-selection");
           }

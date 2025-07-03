@@ -9,12 +9,17 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Palette, Package, Clock, DollarSign } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Palette, Package, Clock, DollarSign, LogOut } from "lucide-react";
+import { signOut } from "next-auth/react";
 import UploadArtwork from "@/custom-components/artist/uploadArtworks";
 import MyArtworks from "@/custom-components/artist/myArtworks";
-import SalesHistory, { Sale } from "@/custom-components/artist/salesHistory"; // import Sale type here if exported
+import SalesHistory, {
+  type Sale,
+} from "@/custom-components/artist/salesHistory"; // import Sale type here if exported
 import ArtistOverview from "@/custom-components/artist/artworkOverview";
-import { updatedData } from "@/custom-components/artist/artworkCard";
+import type { updatedData } from "@/custom-components/artist/artworkCard";
+
 interface MyArtwork {
   id: string;
   title: string;
@@ -55,7 +60,6 @@ export default function ArtistDashboard() {
         const res = await fetch("/api/sales-history");
         if (!res.ok) throw new Error("Failed to fetch sales history");
         const data = await res.json();
-
         const mappedData: Sale[] = data.map((item: Sale) => ({
           id: item.id,
           artistCut: item.artistCut,
@@ -84,15 +88,16 @@ export default function ArtistDashboard() {
             },
           },
         }));
-
         setSalesHistory(mappedData);
       } catch (error) {
         console.error("Error fetching sales history:", error);
         setSalesHistory([]);
       }
     }
+
     fetchSalesHistory();
   }, []);
+
   // ✅ Call after upload to refresh
   const handleArtworkUpload = async () => {
     await fetchArtworks();
@@ -108,11 +113,9 @@ export default function ArtistDashboard() {
         },
         body: JSON.stringify(updatedData),
       });
-
       if (!res.ok) {
         throw new Error("Failed to update artwork");
       }
-
       await fetchArtworks(); // Refresh with updated data
     } catch (error) {
       console.error("Error updating artwork:", error);
@@ -124,15 +127,17 @@ export default function ArtistDashboard() {
       const res = await fetch(`/api/artworks/${id}`, {
         method: "DELETE",
       });
-
       if (!res.ok) {
         throw new Error("Failed to delete artwork");
       }
-
       await fetchArtworks(); // Refresh the artworks list
     } catch (error) {
       console.error("Error deleting artwork:", error);
     }
+  };
+
+  const handleLogout = () => {
+    signOut({ callbackUrl: "/" });
   };
 
   const currentStats = {
@@ -147,13 +152,23 @@ export default function ArtistDashboard() {
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="container mx-auto px-4 max-w-6xl">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Artist Dashboard
-          </h1>
-          <p className="text-gray-600">
-            Manage your artworks and track your sales
-          </p>
+        <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              Artist Dashboard
+            </h1>
+            <p className="text-gray-600">
+              Manage your artworks and track your sales
+            </p>
+          </div>
+          <Button
+            onClick={handleLogout}
+            variant="outline"
+            className="text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200 w-fit bg-transparent"
+          >
+            <LogOut className="h-4 w-4 mr-2" />
+            Logout
+          </Button>
         </div>
 
         {/* Quick Stats */}
