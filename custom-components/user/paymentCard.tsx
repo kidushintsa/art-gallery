@@ -1,97 +1,99 @@
-import { User } from "lucide-react";
+"use client";
+import { ShoppingCart, CreditCard } from "lucide-react";
 
 interface PaymentCardProps {
   subtotal: number;
   shipping: number;
   total: number;
+  cartLength: number;
 }
 
 export default function PaymentCard({
   subtotal,
   shipping,
   total,
+  cartLength,
 }: PaymentCardProps) {
+  const empty = cartLength === 0 ? true : false;
   return (
-    <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl p-6 text-white">
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-semibold">Card Details</h3>
-        <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-          <User className="w-5 h-5" />
+    <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl p-6 text-white shadow-xl">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-8">
+        <h3 className="text-xl font-bold">Order Summary</h3>
+        <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+          <ShoppingCart className="w-6 h-6" />
         </div>
       </div>
 
-      <div className="mb-6">
-        <p className="text-sm opacity-80 mb-2">Card type</p>
-        <div className="flex gap-2">
-          <div className="w-8 h-6 bg-red-500 rounded flex items-center justify-center text-xs font-bold">
-            MC
+      {/* Order Details */}
+      <div className="space-y-6 mb-8">
+        <div className="bg-white/10 rounded-xl p-4 backdrop-blur-sm">
+          <div className="space-y-4">
+            <div className="flex justify-between items-center">
+              <span className="text-white/80 font-medium">Subtotal</span>
+              <span className="font-bold text-lg">
+                {subtotal.toLocaleString()} ETB
+              </span>
+            </div>
+            <div className="h-px bg-white/20"></div>
+            <div className="flex justify-between items-center">
+              <span className="text-white/80 font-medium">Shipping</span>
+              <span className="font-bold text-lg">
+                {shipping.toLocaleString()} ETB
+              </span>
+            </div>
           </div>
-          <div className="w-8 h-6 bg-blue-500 rounded flex items-center justify-center text-xs font-bold">
-            V
-          </div>
-          <div className="w-8 h-6 bg-green-500 rounded flex items-center justify-center text-xs font-bold">
-            CB
+        </div>
+
+        {/* Total Section */}
+        <div className="bg-white/15 rounded-xl p-4 backdrop-blur-sm border border-white/20">
+          <div className="flex justify-between items-center">
+            <span className="text-white font-semibold text-lg">
+              Total (Tax incl.)
+            </span>
+            <span className="font-bold text-2xl">
+              {total.toLocaleString()} ETB
+            </span>
           </div>
         </div>
       </div>
 
-      <div className="space-y-4 mb-6">
-        <div>
-          <label className="text-sm opacity-80">Name on card</label>
-          <input
-            type="text"
-            placeholder="Name"
-            className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 mt-1 placeholder-white/60"
-          />
+      {/* Payment Info */}
+      <div className="mb-6 p-4 bg-white/10 rounded-xl backdrop-blur-sm">
+        <div className="flex items-center gap-3 mb-3">
+          <CreditCard className="w-5 h-5 text-white/80" />
+          <span className="text-white/80 font-medium">Secure Payment</span>
         </div>
-
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label className="text-sm opacity-80">Card Number</label>
-            <input
-              type="text"
-              placeholder="1111 2222 3333 4444"
-              className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 mt-1 placeholder-white/60"
-            />
-          </div>
-          <div>
-            <label className="text-sm opacity-80">Expiration date</label>
-            <input
-              type="text"
-              placeholder="MM/YY"
-              className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 mt-1 placeholder-white/60"
-            />
-          </div>
-        </div>
-
-        <div>
-          <label className="text-sm opacity-80">CVV</label>
-          <input
-            type="text"
-            placeholder="123"
-            className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 mt-1 placeholder-white/60"
-          />
-        </div>
+        <p className="text-white/70 text-sm">
+          Your payment information will be processed securely. We accept all
+          major payment methods.
+        </p>
       </div>
 
-      <div className="space-y-2 mb-6 text-sm">
-        <div className="flex justify-between">
-          <span className="opacity-80">Subtotal</span>
-          <span>{subtotal.toLocaleString()} ETB</span>
+      {/* Checkout Button */}
+      <button
+        className={
+          !empty
+            ? "w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold py-4 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl cursor-pointer"
+            : "bg-emerald-700  text-white font-bold py-4 rounded-xl w-full cursor-not-allowed"
+        }
+        disabled={empty}
+        onClick={() => {
+          console.log("clicked");
+        }}
+      >
+        <div className="flex items-center justify-center gap-2">
+          <CreditCard className="w-5 h-5" />
+          <span className="text-lg">
+            {empty ? "empty cart😢" : "Proceed to Checkout"}
+          </span>
         </div>
-        <div className="flex justify-between">
-          <span className="opacity-80">Shipping</span>
-          <span>{shipping.toLocaleString()} ETB</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="opacity-80">Total (Tax incl.)</span>
-          <span>{total.toLocaleString()} ETB</span>
-        </div>
-      </div>
-
-      <button className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-lg transition-colors">
-        Checkout
       </button>
+
+      {/* Security Badge */}
+      <div className="mt-4 text-center">
+        <p className="text-white/60 text-xs">🔒 Secured</p>
+      </div>
     </div>
   );
 }

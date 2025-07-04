@@ -109,6 +109,7 @@ export default function CartPage() {
               subtotal={subtotal}
               shipping={shipping}
               total={total}
+              cartLength={cartItems.length}
             />
           </div>
         </div>

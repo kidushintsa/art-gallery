@@ -1,9 +1,10 @@
 "use client";
 
-import { Plus, ShoppingCart, Check } from "lucide-react";
+import { Plus, ShoppingCart, Check, Loader } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/hooks/useCart";
 import axios from "axios";
+import { useState } from "react";
 // import { useCart } from "@/app/context/cart-context";
 
 interface AddToCartButtonProps {
@@ -11,10 +12,13 @@ interface AddToCartButtonProps {
 }
 export function AddToCartButton({ id }: AddToCartButtonProps) {
   const { isInCart, mutate } = useCart();
+  const [loading, setLoading] = useState(false);
 
   const handleAdd = async () => {
+    setLoading(true);
     await axios.post("/api/cart/add", { artworkId: id });
     mutate(); // Refresh cart
+    setLoading(false);
   };
 
   // const handleRemove = async () => {
@@ -31,7 +35,12 @@ export function AddToCartButton({ id }: AddToCartButtonProps) {
       onClick={!added ? handleAdd : undefined}
     >
       <ShoppingCart className="h-4 w-4" />
-      {added ? <Check className="h-3 w-3" /> : <Plus className="h-3 w-3" />}
+      {loading && <Loader className="h-3 w-3" />}
+      {added && !loading ? (
+        <Check className="h-3 w-3" />
+      ) : (
+        <Plus className="h-3 w-3" />
+      )}
     </Button>
   );
 }
