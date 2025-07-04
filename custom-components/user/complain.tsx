@@ -208,7 +208,7 @@ export default function ComplainPage() {
                     <Link
                       href={
                         session?.user.role === "CUSTOMER" || "customer"
-                          ? "/dashboard/customer"
+                          ? "/dashboard/user"
                           : ""
                       }
                     >

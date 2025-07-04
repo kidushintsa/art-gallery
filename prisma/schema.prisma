@@ -58,7 +58,7 @@ model Artwork {
 
 enum ArtworkCategory {
   PAINTING
-  SCLUPTURE
+  SCULPTURE
   PHOTOGRAPHY
 }
 

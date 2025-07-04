@@ -19,7 +19,15 @@ export async function GET(req: NextRequest) {
       include: {
         cartItems: {
           include: {
-            artwork: true, // include artwork info if needed
+            artwork: {
+              include: {
+                user: {
+                  select: {
+                    name: true, // ✅ include artist name
+                  },
+                },
+              },
+            },
           },
         },
       },

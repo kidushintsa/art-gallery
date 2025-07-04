@@ -56,7 +56,7 @@ export default function CartPage() {
   };
 
   const subtotal = cartItems.reduce((sum, item) => sum + item.artwork.price, 0);
-  const shipping = 350;
+  const shipping = 250;
   const total = subtotal + shipping;
 
   return (
@@ -66,7 +66,7 @@ export default function CartPage() {
         <div className="flex items-center gap-3 mb-6">
           <button
             className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-            onClick={() => router.push("/dashboard/customer")}
+            onClick={() => router.push("/dashboard/user")}
           >
             <ArrowLeft className="w-5 h-5" />
           </button>

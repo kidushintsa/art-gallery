@@ -8,7 +8,6 @@ import {
   Menu,
   Search,
   ShoppingCart,
-  Settings,
   LogOut,
   MessageSquare,
 } from "lucide-react";
@@ -60,7 +59,7 @@ export function Header() {
               variant="ghost"
               size="icon"
               aria-label="Cart"
-              onClick={() => router.push("/cart")}
+              onClick={() => router.push("/dashboard/user/cart")}
             >
               <ShoppingCart className="h-5 w-5" />
             </Button>
@@ -109,24 +108,13 @@ export function Header() {
             {username}
           </span>
 
-          {/* Settings */}
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label="Settings"
-            title="Settings"
-            onClick={() => router.push("/settings")}
-          >
-            <Settings className="h-5 w-5" />
-          </Button>
-
           {/* Complain */}
           <Button
             variant="ghost"
             size="icon"
             aria-label="Complain"
             title="File a Complaint"
-            onClick={() => router.push("/complain")}
+            onClick={() => router.push("/dashboard/user/complain")}
           >
             <MessageSquare className="h-5 w-5" />
           </Button>
@@ -137,7 +125,7 @@ export function Header() {
             size="icon"
             aria-label="Cart"
             title="Shopping Cart"
-            onClick={() => router.push("/cart")}
+            onClick={() => router.push("/dashboard/user/cart")}
           >
             <ShoppingCart className="h-5 w-5" />
           </Button>

@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Palette, CreditCard, Banknote, Shield, Sparkles } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const paymentMethods = [
   "Commercial Bank of Ethiopia (CBE)",
@@ -73,6 +74,7 @@ const formSchema = z
   );
 
 export default function ArtistPayOptions() {
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -89,14 +91,27 @@ export default function ArtistPayOptions() {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
 
-    // Just log the data as requested
-    console.log("Payment setup data:", values);
+    try {
+      const response = await fetch("/api/artist/payout/setup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
 
-    // Simulate a brief delay
-    setTimeout(() => {
+      const result = await response.json();
+
+      if (!response.ok) throw new Error(result.error || "Something went wrong");
+
+      alert("Payment info saved successfully!");
+      router.push("/dashboard/artist");
+    } catch (error) {
+      console.error("Error submitting payout setup:", error);
+      alert("Failed to save payment info. Try again.");
+    } finally {
       setIsSubmitting(false);
-      alert("Payment setup logged to console!");
-    }, 1000);
+    }
   };
 
   const getAccountNumberPlaceholder = () => {

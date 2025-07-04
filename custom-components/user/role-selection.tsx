@@ -68,7 +68,7 @@ export default function RoleSelection() {
           if (data.role === "artist") {
             router.push("/paymentmethods");
           } else if (data.role === "customer") {
-            router.push("/dashboard/customer");
+            router.push("/dashboard/user");
           } else {
             console.log("admin");
           }

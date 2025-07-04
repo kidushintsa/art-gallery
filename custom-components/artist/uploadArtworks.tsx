@@ -31,7 +31,7 @@ const formSchema = z.object({
   title: z.string().min(2).max(100),
   price: z.number().min(1).max(1000000),
   category: z.enum(categories),
-  description: z.string().max(500).optional(),
+  description: z.string().max(190).optional(),
   imageFile: z.any(),
 });
 
@@ -54,6 +54,9 @@ export default function UploadArtwork({ onUpload }: UploadArtworkProps) {
     },
   });
 
+  const description = form.watch("description") || "";
+  const charCount = description.length;
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     if (!file) {
       alert("Please upload an image.");
@@ -63,7 +66,6 @@ export default function UploadArtwork({ onUpload }: UploadArtworkProps) {
     setIsSubmitting(true);
 
     try {
-      // Upload to Cloudinary
       const formData = new FormData();
       formData.append("file", file);
       formData.append("upload_preset", "artworks");
@@ -79,7 +81,6 @@ export default function UploadArtwork({ onUpload }: UploadArtworkProps) {
       const cloudData = await cloudRes.json();
       if (!cloudData.secure_url) throw new Error("Cloudinary upload failed");
 
-      // Send to API route
       const response = await fetch("/api/artworks/upload", {
         method: "POST",
         headers: {
@@ -96,9 +97,7 @@ export default function UploadArtwork({ onUpload }: UploadArtworkProps) {
 
       if (!response.ok) throw new Error("Failed to save artwork");
 
-      // const savedArtwork = await response.json();
-      onUpload(); // Add to UI list
-
+      onUpload();
       form.reset();
       setFile(null);
       setPreviewUrl(null);
@@ -221,16 +220,27 @@ export default function UploadArtwork({ onUpload }: UploadArtworkProps) {
             )}
           />
 
-          {/* Description */}
+          {/* Description with 190 char limit */}
           <FormField
             control={form.control}
             name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Description (Optional)</FormLabel>
+                <FormLabel>Description (max 190 characters)</FormLabel>
                 <FormControl>
-                  <Textarea {...field} />
+                  <Textarea
+                    {...field}
+                    value={field.value || ""}
+                    onChange={(e) => {
+                      if (e.target.value.length <= 190) {
+                        field.onChange(e.target.value);
+                      }
+                    }}
+                  />
                 </FormControl>
+                <p className="text-sm text-gray-600">
+                  {charCount} / 190 characters
+                </p>
                 <FormMessage />
               </FormItem>
             )}
