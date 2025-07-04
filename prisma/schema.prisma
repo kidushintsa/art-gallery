@@ -27,7 +27,7 @@ model User {
   // Relations
   artworks          Artwork[]     // Artist uploads
   cartItems         CartItem[]    // Customer cart
-  orders            Order[]       // Customer orders
+  orders            Orders[]       // Customer orders
   orderItems        OrderItem[]   // Artist revenue tracking
   payouts           Payout[]      // Artist payouts
 }
@@ -50,7 +50,7 @@ model Artwork {
     purchased  Boolean @default(false)
     category   ArtworkCategory?
 
-  user      User  @relation(fields: [artistId], references: [id])
+  user      User  @relation(fields: [artistId], references: [id], onDelete: Cascade)
   artistId    String
   orderItems  OrderItem[]
   cartItems   CartItem[]
@@ -73,10 +73,10 @@ model CartItem {
   userId     String
   user       User  @relation(fields: [userId], references: [id])
   artworkId  String
-  artwork    Artwork   @relation(fields: [artworkId], references: [id])
+  artwork    Artwork   @relation(fields: [artworkId], references: [id], onDelete: Cascade)
 }
 
-model Order {
+model Orders {
   id             String        @id @default(cuid())
   totalAmount    Float
   paymentStatus  PaymentStatus @default(PENDING)
@@ -85,7 +85,7 @@ model Order {
   createdAt      DateTime      @default(now())
 
   userId         String
-  user           User          @relation(fields: [userId], references: [id])
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   orderItems     OrderItem[]
 }
@@ -105,13 +105,13 @@ model OrderItem {
   payoutDate    DateTime?
 
   orderId       String
-  order         Order         @relation(fields: [orderId], references: [id])
+  order         Orders         @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
   artworkId     String
   artwork       Artwork       @relation(fields: [artworkId], references: [id])
 
   artistId      String
-  user        User     @relation(fields: [artistId], references: [id])
+  user        User     @relation(fields: [artistId], references: [id], onDelete: Cascade)
 }
 
 enum PayoutStatus {

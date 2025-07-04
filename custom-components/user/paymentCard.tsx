@@ -1,5 +1,6 @@
 "use client";
 import { ShoppingCart, CreditCard } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface PaymentCardProps {
   subtotal: number;
@@ -15,6 +16,7 @@ export default function PaymentCard({
   cartLength,
 }: PaymentCardProps) {
   const empty = cartLength === 0 ? true : false;
+  const router = useRouter();
   return (
     <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl p-6 text-white shadow-xl">
       {/* Header */}
@@ -78,8 +80,26 @@ export default function PaymentCard({
             : "bg-emerald-700  text-white font-bold py-4 rounded-xl w-full cursor-not-allowed"
         }
         disabled={empty}
-        onClick={() => {
-          console.log("clicked");
+        onClick={async () => {
+          try {
+            const res = await fetch("/api/checkout", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ total }), // You can also include shipping if needed
+            });
+
+            const data = await res.json();
+
+            if (data.checkoutUrl) {
+              router.push(data.checkoutUrl);
+            } else {
+              alert("Payment initialization failed.");
+              console.error(data);
+            }
+          } catch (err) {
+            alert("Something went wrong.");
+            console.error(err);
+          }
         }}
       >
         <div className="flex items-center justify-center gap-2">

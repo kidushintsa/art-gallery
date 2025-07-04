@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
     // Only process successful payments
     if (paymentStatus === "success") {
       // Mark order as paid in DB
-      await prisma.order.updateMany({
+      await prisma.orders.updateMany({
         where: {
           chapaTxRef: txRef,
         },

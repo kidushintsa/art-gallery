@@ -3,7 +3,7 @@ import { prisma } from "@/prisma/client"; // Update this import path as needed
 
 export async function GET() {
   try {
-    const orders = await prisma.order.findMany({
+    const orders = await prisma.orders.findMany({
       include: {
         user: {
           select: {
@@ -16,6 +16,7 @@ export async function GET() {
             artwork: {
               select: {
                 title: true,
+                imageUrl: true,
               },
             },
             user: {
