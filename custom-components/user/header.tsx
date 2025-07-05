@@ -24,7 +24,13 @@ import MobileMenu from "./mobile-menu";
 
 import { signOut, useSession } from "next-auth/react";
 
-export function Header() {
+export function Header({
+  setSearchTitle,
+  title,
+}: {
+  setSearchTitle: (t: string) => void;
+  title: string;
+}) {
   const { status, data: session } = useSession();
 
   const username = status === "authenticated" ? session.user.name : "user";
@@ -95,6 +101,8 @@ export function Header() {
               type="search"
               placeholder="Search your artist or art..."
               className="w-full pl-8 rounded-md"
+              value={title}
+              onChange={(e) => setSearchTitle(e.target.value)}
             />
           </div>
         </div>

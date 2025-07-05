@@ -14,10 +14,11 @@ interface PublicArtwork {
   };
 }
 
-const ArtGrid = () => {
+const ArtGrid = ({ tit }: { tit: string }) => {
   const [artworks, setArtworks] = useState<PublicArtwork[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Fetch all artworks once
   useEffect(() => {
     const fetchArtworks = async () => {
       try {
@@ -36,25 +37,35 @@ const ArtGrid = () => {
     fetchArtworks();
   }, []);
 
+  // Filter artworks based on title prop
+  const filteredArtworks = tit.trim()
+    ? artworks.filter((art) =>
+        art.title.toLowerCase().includes(tit.trim().toLowerCase())
+      )
+    : artworks;
+
   if (loading) {
     return <p className="py-5 text-2xl text-center">Loading artworks...</p>;
   }
 
   return (
     <>
-      {artworks.length > 0 ? (
+      {filteredArtworks.length > 0 ? (
         <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 px-2 py-3">
-          {artworks.map(({ id, title, user, description, price, imageUrl }) => (
-            <ArtCard
-              key={id}
-              id={id}
-              alt={title}
-              artist={user.name || "Unknown Artist"}
-              description={description}
-              price={price}
-              src={imageUrl}
-            />
-          ))}
+          {filteredArtworks.map(
+            ({ id, title, user, description, price, imageUrl }) => (
+              <ArtCard
+                title={title}
+                key={id}
+                id={id}
+                alt={title}
+                artist={user.name || "Unknown Artist"}
+                description={description}
+                price={price}
+                src={imageUrl}
+              />
+            )
+          )}
         </div>
       ) : (
         <p className="py-5 text-4xl text-center">No Artwork found 😥</p>

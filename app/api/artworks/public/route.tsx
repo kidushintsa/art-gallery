@@ -1,15 +1,14 @@
 // app/api/artworks/public/route.ts
 import { prisma } from "@/prisma/client";
 import { getServerSession } from "next-auth";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { authOptions } from "../../auth/[...nextauth]/route";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.email) {
     return NextResponse.json({ error: "unauthorized user" }, { status: 400 });
   }
-
   try {
     const artworks = await prisma.artwork.findMany({
       where: {

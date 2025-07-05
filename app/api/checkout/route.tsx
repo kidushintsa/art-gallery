@@ -3,7 +3,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/prisma/client";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "../auth/[...nextauth]/route";
 
 export async function POST(req: NextRequest) {
   try {
@@ -62,6 +62,7 @@ export async function POST(req: NextRequest) {
         },
       },
     });
+    console.log("your order from checkout route", order);
 
     // Optional: Clear the user's cart after order is placed
     await prisma.cartItem.deleteMany({ where: { userId: user.id } });
@@ -82,11 +83,11 @@ export async function POST(req: NextRequest) {
           first_name: user.name || "User",
           last_name: "Customer",
           tx_ref: txRef,
-          callback_url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/payment/callback`,
-          return_url: `${process.env.NEXT_PUBLIC_BASE_URL}/thank-you`,
+          // callback_url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/payment/callback`,
+          return_url: `${process.env.NEXT_PUBLIC_BASE_URL}/verify-payment/${txRef}`,
           customization: {
             title: "Art Gallery",
-            description: "Thank you for supporting artists.",
+            description: "Thank you",
           },
         }),
       }

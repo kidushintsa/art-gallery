@@ -17,6 +17,7 @@ const ArtCard = ({
   id,
   src,
   alt,
+  title,
   description,
   artist,
   price,
@@ -26,6 +27,7 @@ const ArtCard = ({
   artist: string;
   price: number;
   alt: string;
+  title: string;
   description: string;
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -75,7 +77,7 @@ const ArtCard = ({
         </DialogTrigger>
 
         <DialogContent className="p-0 max-w-5xl max-h-[90vh]">
-          <DialogTitle className="sr-only">{description}</DialogTitle>
+          <DialogTitle className="sr-only">{title}</DialogTitle>
           <div className="relative w-full h-[80vh] bg-black rounded-lg overflow-hidden">
             <Image
               src={src || "/placeholder.svg"}
@@ -86,9 +88,7 @@ const ArtCard = ({
 
             {/* Image Info Overlay */}
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
-              <h3 className="text-white text-xl font-bold mb-2">
-                {description}
-              </h3>
+              <h3 className="text-white text-xl font-bold mb-2">{title}</h3>
               <div className="flex items-center justify-between text-white/80">
                 <div className="flex items-center gap-2">
                   <User className="w-4 h-4" />
@@ -108,12 +108,15 @@ const ArtCard = ({
 
       {/* Card Content */}
       <div className="p-6">
-        {/* Title and Artist */}
+        {/* Title and Description */}
         <div className="mb-4">
           <div className="mb-2">
-            <h3 className="font-bold text-lg text-gray-900 leading-tight">
-              {displayDescription}
+            <h3 className="font-bold text-lg text-gray-900 leading-tight mb-2">
+              {title}
             </h3>
+            <p className="text-gray-700 text-sm leading-relaxed">
+              {displayDescription}
+            </p>
 
             {/* See More/Hide Button */}
             {shouldTruncate && (

@@ -81,7 +81,7 @@ model Orders {
   totalAmount    Float
   paymentStatus  PaymentStatus @default(PENDING)
   paymentMethod  String?
-  chapaTxRef     String?
+  chapaTxRef     String?    @unique
   createdAt      DateTime      @default(now())
 
   userId         String
@@ -101,7 +101,7 @@ model OrderItem {
   id             String    @id @default(cuid())
   price         Float
   artistCut     Float
-  payoutStatus  PayoutStatus  @default(UNPAID)
+  // payoutStatus  PayoutStatus  @default(UNPAID)
   payoutDate    DateTime?
 
   orderId       String
