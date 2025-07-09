@@ -3,7 +3,6 @@
 import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { MoonLoader } from "react-spinners";
 
 export default function CheckRolePage() {
   const { status } = useSession();
@@ -42,7 +41,7 @@ export default function CheckRolePage() {
   if (status === "loading" || status === "unauthenticated") {
     return (
       <div className="grid h-screen place-items-center text-gray-500">
-        <MoonLoader size={60} />
+        <span className="loading loading-bars loading-xl"></span>
       </div>
     );
   }
