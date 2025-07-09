@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import {
   Card,
   CardContent,
@@ -18,7 +18,6 @@ import SalesHistory, {
   type Sale,
 } from "@/custom-components/artist/salesHistory"; // import Sale type here if exported
 import ArtistOverview from "@/custom-components/artist/artworkOverview";
-import type { updatedData } from "@/custom-components/artist/artworkCard";
 
 interface MyArtwork {
   id: string;
@@ -32,6 +31,12 @@ interface MyArtwork {
   createdAt: string; // or `Date` depending on how you're handling it
   updatedAt: string;
   userId: string;
+}
+interface updatedData {
+  title: string;
+  price: number;
+  category: "PAINTING" | "SCULPTURE" | "PHOTOGRAPHY";
+  description: string | "";
 }
 
 export default function ArtistDashboard() {
@@ -264,11 +269,13 @@ export default function ArtistDashboard() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <ArtistOverview
-                  stats={currentStats}
-                  recentArtworks={artworks.slice(0, 5)}
-                  onUploadClick={() => setActiveTab("upload")}
-                />
+                <Suspense fallback={<p>Loading......</p>}>
+                  <ArtistOverview
+                    stats={currentStats}
+                    recentArtworks={artworks.slice(0, 5)}
+                    onUploadClick={() => setActiveTab("upload")}
+                  />
+                </Suspense>
               </CardContent>
             </Card>
           </TabsContent>
@@ -282,7 +289,9 @@ export default function ArtistDashboard() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <UploadArtwork onUpload={handleArtworkUpload} />
+                <Suspense fallback={<p>Loading......</p>}>
+                  <UploadArtwork onUpload={handleArtworkUpload} />
+                </Suspense>
               </CardContent>
             </Card>
           </TabsContent>
@@ -296,12 +305,14 @@ export default function ArtistDashboard() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <MyArtworks
-                  artworks={artworks}
-                  onUpdate={handleArtworkUpdate}
-                  onDelete={handleArtworkDelete}
-                  onUploadClick={() => setActiveTab("upload")}
-                />
+                <Suspense fallback={<p>Loading......</p>}>
+                  <MyArtworks
+                    artworks={artworks}
+                    onUpdate={handleArtworkUpdate}
+                    onDelete={handleArtworkDelete}
+                    onUploadClick={() => setActiveTab("upload")}
+                  />
+                </Suspense>
               </CardContent>
             </Card>
           </TabsContent>
@@ -315,7 +326,9 @@ export default function ArtistDashboard() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <SalesHistory salesHistory={salesHistory} />
+                <Suspense fallback={<p>Loading......</p>}>
+                  <SalesHistory salesHistory={salesHistory} />
+                </Suspense>
               </CardContent>
             </Card>
           </TabsContent>

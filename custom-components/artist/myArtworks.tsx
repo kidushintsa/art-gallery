@@ -11,8 +11,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Search, Plus, Filter } from "lucide-react";
-import ArtworkCard, { updatedData } from "./artworkCard";
-
+import ArtworkCard from "./artworkCard";
+interface updatedData {
+  title: string;
+  price: number;
+  category: "PAINTING" | "SCULPTURE" | "PHOTOGRAPHY";
+  description: string | "";
+}
 export interface Artwork {
   id: string;
   title: string;

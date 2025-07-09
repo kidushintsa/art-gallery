@@ -31,30 +31,7 @@ import { Label } from "@/components/ui/label";
 import { Edit, Trash2, Calendar, DollarSign } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import Image from "next/image";
-
-interface Artwork {
-  id: string;
-  title: string;
-  imageUrl: string;
-  price: number;
-  status: "APPROVED" | "PENDING" | "REJECTED";
-  category: "PAINTING" | "SCULPTURE" | "PHOTOGRAPHY";
-  description?: string;
-  createdAt: string;
-  sold: boolean;
-}
-
-export interface updatedData {
-  title: string;
-  price: number;
-  category: "PAINTING" | "SCULPTURE" | "PHOTOGRAPHY";
-  description: string | "";
-}
-interface ArtworkCardProps {
-  artwork: Artwork;
-  onUpdate: (id: string, updatedData: updatedData) => void;
-  onDelete: (id: string) => void;
-}
+import { ArtworkCardProps } from "@/entities/artwork";
 
 export default function ArtworkCard({
   artwork,
