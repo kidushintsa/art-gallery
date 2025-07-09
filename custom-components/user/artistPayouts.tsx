@@ -99,7 +99,10 @@ export default function ArtistPayouts({
   return (
     <div className="space-y-6">
       {artistPayouts.map((artistPayout) => (
-        <Card key={artistPayout.artistId} className="border border-gray-200">
+        <Card
+          key={Math.random() + `${artistPayout.artistId}`}
+          className="border border-gray-200"
+        >
           <CardHeader className="bg-gray-50">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div className="flex items-center gap-3">

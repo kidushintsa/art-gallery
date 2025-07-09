@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { X, LogOut, MessageSquare } from "lucide-react";
+import { X, LogOut, MessageSquare, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import type React from "react";
@@ -50,12 +50,22 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
             <button
               onClick={() => {
                 onClose();
+                router.push("/dashboard/user/my-complaints");
+              }}
+              className="flex items-center gap-3 w-full py-2 px-3 rounded-md hover:bg-gray-200 transition-colors"
+            >
+              <Eye className="h-4 w-4" />
+              My Complaints
+            </button>
+            <button
+              onClick={() => {
+                onClose();
                 router.push("/dashboard/user/complain");
               }}
               className="flex items-center gap-3 w-full py-2 px-3 rounded-md hover:bg-gray-200 transition-colors"
             >
               <MessageSquare className="h-4 w-4" />
-              Complain
+              File Complaint
             </button>
             <button
               onClick={() => {

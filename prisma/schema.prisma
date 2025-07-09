@@ -101,7 +101,7 @@ model OrderItem {
   id             String    @id @default(cuid())
   price         Float
   artistCut     Float
-  // payoutStatus  PayoutStatus  @default(UNPAID)
+  artistGetPaid  PayoutStatus  @default(UNPAID)
   payoutDate    DateTime?
 
   orderId       String

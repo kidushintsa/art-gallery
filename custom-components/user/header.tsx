@@ -10,6 +10,7 @@ import {
   ShoppingCart,
   LogOut,
   MessageSquare,
+  Eye,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -99,7 +100,7 @@ export function Header({
 
             <Input
               type="search"
-              placeholder="Search your artist or art..."
+              placeholder="Search by title..."
               className="w-full pl-8 rounded-md"
               value={title}
               onChange={(e) => setSearchTitle(e.target.value)}
@@ -125,6 +126,17 @@ export function Header({
             onClick={() => router.push("/dashboard/user/complain")}
           >
             <MessageSquare className="h-5 w-5" />
+          </Button>
+
+          {/* View My Complaints */}
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label="View My Complaints"
+            title="View My Complaints"
+            onClick={() => router.push("/dashboard/user/my-complaints")}
+          >
+            <Eye className="h-5 w-5" />
           </Button>
 
           {/* Cart */}
@@ -155,7 +167,12 @@ export function Header({
 
       {/* Mobile Search Bar */}
 
-      <SearchBar isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+      <SearchBar
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+        setSearchTitle={setSearchTitle}
+        title={title}
+      />
     </header>
   );
 }

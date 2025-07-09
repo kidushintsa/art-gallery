@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { useState } from "react";
+// import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -11,14 +11,21 @@ import { Input } from "@/components/ui/input";
 interface SearchBarProps {
   isOpen: boolean;
   onClose: () => void;
+  setSearchTitle: (t: string) => void;
+  title: string;
 }
 
-export function SearchBar({ isOpen, onClose }: SearchBarProps) {
-  const [searchQuery, setSearchQuery] = useState("");
+export function SearchBar({
+  isOpen,
+  onClose,
+  setSearchTitle,
+  title,
+}: SearchBarProps) {
+  // const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Searching for:", searchQuery);
+    // console.log("Searching for:", searchQuery);
     // Implement search functionality here
     onClose();
   };
@@ -40,8 +47,8 @@ export function SearchBar({ isOpen, onClose }: SearchBarProps) {
                 type="search"
                 placeholder="Search your artist or art..."
                 className="w-full pl-8"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                value={title}
+                onChange={(e) => setSearchTitle(e.target.value)}
                 autoFocus
               />
             </div>

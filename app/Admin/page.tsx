@@ -16,12 +16,14 @@ import {
   Users,
   ShoppingBag,
   LogOut,
+  DollarSign,
 } from "lucide-react";
 import { signOut } from "next-auth/react";
 import ArtworkApproval from "@/custom-components/admin/artwork-approval";
 import UsersManagement from "@/custom-components/admin/users-management";
 import ComplaintsManagement from "@/custom-components/admin/complaints-managment";
 import OrdersManagement from "@/custom-components/admin/order-management";
+import { useRouter } from "next/navigation";
 
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState("artworks");
@@ -29,6 +31,7 @@ export default function AdminPage() {
   const [complaints, setComplaints] = useState([]);
   const [users, setUsers] = useState([]);
   const [orders, setOrders] = useState([]);
+  const router = useRouter();
 
   const fetchData = async () => {
     const [artworksRes, complaintsRes, usersRes, ordersRes] = await Promise.all(
@@ -80,14 +83,23 @@ export default function AdminPage() {
               Manage artworks, complaints, users, and orders
             </p>
           </div>
-          <Button
-            onClick={handleLogout}
-            variant="outline"
-            className="text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200 w-fit bg-transparent"
-          >
-            <LogOut className="h-4 w-4 mr-2" />
-            Logout
-          </Button>
+          <div className="flex gap-3">
+            <Button
+              onClick={() => router.push("/admin/artist-payouts")}
+              className="bg-green-600 hover:bg-green-700 text-white"
+            >
+              <DollarSign className="h-4 w-4 mr-2" />
+              Artist Payouts
+            </Button>
+            <Button
+              onClick={handleLogout}
+              variant="outline"
+              className="text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200 w-fit bg-transparent"
+            >
+              <LogOut className="h-4 w-4 mr-2" />
+              Logout
+            </Button>
+          </div>
         </div>
 
         {/* Stats Cards */}

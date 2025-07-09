@@ -27,6 +27,7 @@ interface CartItem {
   artworkId: string;
   artwork: Artwork;
 }
+// Move this OUTSIDE the component if needed globally
 
 export default function CartPage() {
   const router = useRouter();
