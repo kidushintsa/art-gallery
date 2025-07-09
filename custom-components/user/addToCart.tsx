@@ -21,11 +21,6 @@ export function AddToCartButton({ id }: AddToCartButtonProps) {
     setLoading(false);
   };
 
-  // const handleRemove = async () => {
-  //   await axios.post("/api/cart/remove", { artworkId: id });
-  //   mutate(); // Refresh cart
-  // };
-
   const added = isInCart(id);
   return (
     <Button

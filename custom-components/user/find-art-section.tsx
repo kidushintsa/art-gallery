@@ -1,10 +1,5 @@
+import { FindArtSectionProps } from "@/entities/FindArtSection";
 import Image from "next/image";
-
-interface FindArtSectionProps {
-  image: string;
-  title: string;
-  description: string;
-}
 
 export function FindArtSection({
   image,

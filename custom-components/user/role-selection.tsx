@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Card,
   CardContent,
@@ -8,10 +6,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Palette, Eye, ArrowRight } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { roles } from "@/entities/roles";
+import RoleSubmit from "./roleSubmit";
 
 export default function RoleSelection() {
   const { register, handleSubmit, watch, setValue } = useForm({
@@ -21,35 +20,6 @@ export default function RoleSelection() {
   });
 
   const selectedRole = watch("role");
-
-  const roles = [
-    {
-      id: "artist",
-      title: "Artist",
-      description: "Showcase and sell your artwork to collectors worldwide",
-      icon: Palette,
-      features: [
-        "Upload artwork",
-        "Set prices",
-        "Receive payments",
-        "Artist profile",
-      ],
-      badge: "Earn Money",
-    },
-    {
-      id: "customer",
-      title: "Art Collector",
-      description: "Discover and purchase unique pieces from talented artists",
-      icon: Eye,
-      features: [
-        "Browse gallery",
-        "Purchase artwork",
-        "Collection management",
-        "Artist following",
-      ],
-      badge: "Discover Art",
-    },
-  ];
   const router = useRouter();
   const { status } = useSession();
 
@@ -158,15 +128,7 @@ export default function RoleSelection() {
           <input type="hidden" {...register("role")} />
 
           <div className="text-center">
-            <button
-              type="submit"
-              disabled={!selectedRole}
-              className="inline-flex items-center px-8 py-3 bg-blue-600 text-white font-medium text-lg rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            >
-              Continue as{" "}
-              {selectedRole && roles.find((r) => r.id === selectedRole)?.title}
-              <ArrowRight className="ml-2 w-4 h-4" />
-            </button>
+            <RoleSubmit selectedRole={selectedRole} />
           </div>
         </form>
       </div>

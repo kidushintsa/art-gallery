@@ -1,13 +1,6 @@
-"use client";
 import { ShoppingCart, CreditCard } from "lucide-react";
-import { useRouter } from "next/navigation";
-
-interface PaymentCardProps {
-  subtotal: number;
-  shipping: number;
-  total: number;
-  cartLength: number;
-}
+import CheckOutButton from "./checkOutButton";
+import { PaymentCardProps } from "@/entities/payment";
 
 export default function PaymentCard({
   subtotal,
@@ -16,7 +9,6 @@ export default function PaymentCard({
   cartLength,
 }: PaymentCardProps) {
   const empty = cartLength === 0 ? true : false;
-  const router = useRouter();
   return (
     <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl p-6 text-white shadow-xl">
       {/* Header */}
@@ -73,42 +65,7 @@ export default function PaymentCard({
       </div>
 
       {/* Checkout Button */}
-      <button
-        className={
-          !empty
-            ? "w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold py-4 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl cursor-pointer"
-            : "bg-emerald-700  text-white font-bold py-4 rounded-xl w-full cursor-not-allowed"
-        }
-        disabled={empty}
-        onClick={async () => {
-          try {
-            const res = await fetch("/api/checkout", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ total }), // You can also include shipping if needed
-            });
-
-            const data = await res.json();
-
-            if (data.checkoutUrl) {
-              router.push(data.checkoutUrl);
-            } else {
-              alert("Payment initialization failed.");
-              console.error(data);
-            }
-          } catch (err) {
-            alert("Something went wrong.");
-            console.error(err);
-          }
-        }}
-      >
-        <div className="flex items-center justify-center gap-2">
-          <CreditCard className="w-5 h-5" />
-          <span className="text-lg">
-            {empty ? "empty cart😢" : "Proceed to Checkout"}
-          </span>
-        </div>
-      </button>
+      <CheckOutButton empty={empty} total={total} />
 
       {/* Security Badge */}
       <div className="mt-4 text-center">

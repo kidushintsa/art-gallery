@@ -1,9 +1,6 @@
-"use client";
-
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -29,25 +26,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { MessageSquare, Send } from "lucide-react";
+import { MessageSquare } from "lucide-react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-
-const formSchema = z.object({
-  category: z.string().min(1, "Please select a complaint category"),
-  subject: z.string().min(5, "Subject must be at least 5 characters"),
-  description: z.string().min(10, "Description must be at least 10 characters"),
-});
-
-const complaintCategories = [
-  "Product Quality",
-  "Shipping Issues",
-  "Customer Service",
-  "Payment Problems",
-  "Website Issues",
-  "Artist Concerns",
-  "Other",
-];
+import ComplaintSubmitButton from "./complaintSubmitButton";
+import { complaintCategories } from "@/entities/complaintCategories";
+import { formSchema } from "@/entities/complaintFormSchema";
+import z from "zod";
 
 export default function ComplainPage() {
   const { data: session } = useSession();
@@ -187,23 +172,7 @@ export default function ComplainPage() {
                 />
 
                 <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="flex-1"
-                  >
-                    {isSubmitting ? (
-                      <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                        <span>Submitting...</span>
-                      </div>
-                    ) : (
-                      <div className="flex items-center gap-2">
-                        <Send className="w-4 h-4" />
-                        <span>Submit Complaint</span>
-                      </div>
-                    )}
-                  </Button>
+                  <ComplaintSubmitButton isSubmitting={isSubmitting} />
                   <Button type="button" variant="outline" asChild>
                     <Link
                       href={

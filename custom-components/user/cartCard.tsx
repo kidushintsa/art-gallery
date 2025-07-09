@@ -2,15 +2,7 @@
 
 import Image from "next/image";
 import { Trash2 } from "lucide-react";
-
-interface ArtCardProps {
-  id: string;
-  imageUrl: string;
-  title: string;
-  artist: string;
-  price: number;
-  onRemove?: (id: string) => void;
-}
+import { ArtCardProps } from "@/entities/artCard";
 
 export default function CartCard({
   id,
