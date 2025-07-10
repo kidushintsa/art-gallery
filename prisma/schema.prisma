@@ -108,7 +108,7 @@ model OrderItem {
   order         Orders         @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
   artworkId     String
-  artwork       Artwork       @relation(fields: [artworkId], references: [id])
+  artwork       Artwork       @relation(fields: [artworkId], references: [id], onDelete: Cascade)
 
   artistId      String
   user        User     @relation(fields: [artistId], references: [id], onDelete: Cascade)
