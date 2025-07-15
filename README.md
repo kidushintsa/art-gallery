@@ -6,13 +6,10 @@ A modern, responsive website for showcasing artworks. Built to provide a clean a
 
 ## 📸 Features
 
-- 🖼️ Gallery of artworks with categories
-- 👤 Artist profile pages
-- 🗓️ Upcoming exhibitions/events section
+- 🖼️ Gallery of artworks
 - 🔍 Search and filter functionality
-- 📱 Responsive design (Mobile-first)
-- 🧭 Easy navigation and smooth scroll
-- 🎨 Dark/Light mode (optional)
+- 📱 Responsive design
+- 🧭 Easy navigation
 
 ---
 
