@@ -1,8 +1,8 @@
 "use client";
 import React, { useState } from "react";
-import { Header } from "@/custom-components/user/header";
 import ArtGrid from "@/custom-components/user/artGrid";
 import Hero from "@/custom-components/user/Hero";
+import { Header } from "@/custom-components/user/header";
 // import { signOut} from "next-auth/react";
 // import Link from "next/link";
 const Just = () => {

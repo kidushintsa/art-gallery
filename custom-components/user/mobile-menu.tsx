@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { X, LogOut, MessageSquare, Eye } from "lucide-react";
+import { X, LogOut, MessageSquare, Eye, Package } from "lucide-react"; // Added Package
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import type React from "react";
@@ -66,6 +66,16 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
             >
               <MessageSquare className="h-4 w-4" />
               File Complaint
+            </button>
+            <button
+              onClick={() => {
+                onClose();
+                router.push("/dashboard/user/orders");
+              }}
+              className="flex items-center gap-3 w-full py-2 px-3 rounded-md hover:bg-gray-200 transition-colors"
+            >
+              <Package className="h-4 w-4" /> {/* Added Package icon */}
+              Order History
             </button>
             <button
               onClick={() => {

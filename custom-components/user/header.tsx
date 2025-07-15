@@ -1,9 +1,6 @@
 "use client";
-
 import { useState } from "react";
-
 import Link from "next/link";
-
 import {
   Menu,
   Search,
@@ -11,18 +8,13 @@ import {
   LogOut,
   MessageSquare,
   Eye,
+  Package,
 } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
-
 import { Input } from "@/components/ui/input";
-
 import { SearchBar } from "./serachBar";
-
 import { useRouter } from "next/navigation";
-
 import MobileMenu from "./mobile-menu";
-
 import { signOut, useSession } from "next-auth/react";
 
 export function Header({
@@ -33,20 +25,15 @@ export function Header({
   title: string;
 }) {
   const { status, data: session } = useSession();
-
   const username = status === "authenticated" ? session.user.name : "user";
-
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-
   const router = useRouter();
 
   return (
     <header className="sticky top-0 z-40 w-full bg-background/95 backdrop-blur">
       <div className="container flex h-16 items-center justify-between px-4">
         {/* Mobile Header */}
-
         <div className="flex items-center justify-between w-full md:hidden">
           <Button
             variant="ghost"
@@ -56,11 +43,9 @@ export function Header({
           >
             <Menu className="h-6 w-6" />
           </Button>
-
-          <Link href="/" className="font-bold text-xl">
+          <Link href="/dashboard/user" className="font-bold text-xl">
             Art Gallery
           </Link>
-
           <div className="flex items-center gap-2">
             <Button
               variant="ghost"
@@ -70,7 +55,6 @@ export function Header({
             >
               <ShoppingCart className="h-5 w-5" />
             </Button>
-
             <Button
               variant="ghost"
               size="icon"
@@ -83,12 +67,10 @@ export function Header({
         </div>
 
         {/* Desktop Header */}
-
         <div className="hidden md:flex items-center gap-6">
           <Link href="/" className="font-bold text-xl">
             Home
           </Link>
-
           <Link href="/about" className="text-muted-foreground">
             About us
           </Link>
@@ -97,7 +79,6 @@ export function Header({
         <div className="hidden md:flex flex-1 max-w-md mx-4">
           <div className="relative w-full">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-
             <Input
               type="search"
               placeholder="Search by title..."
@@ -139,6 +120,17 @@ export function Header({
             <Eye className="h-5 w-5" />
           </Button>
 
+          {/* Order History */}
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label="Order History"
+            title="Order History"
+            onClick={() => router.push("/dashboard/user/orders/history")}
+          >
+            <Package className="h-5 w-5" />
+          </Button>
+
           {/* Cart */}
           <Button
             variant="ghost"
@@ -162,11 +154,9 @@ export function Header({
       </div>
 
       {/* Mobile Menu */}
-
       <MobileMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
 
       {/* Mobile Search Bar */}
-
       <SearchBar
         isOpen={isSearchOpen}
         onClose={() => setIsSearchOpen(false)}

@@ -1,70 +1,135 @@
-import { prisma } from "@/prisma/client";
 import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]/route";
+import { prisma } from "@/prisma/client";
+
+interface OrderUser {
+  name: string | null;
+  email: string | null;
+}
+
+interface ArtworkInfo {
+  id: string;
+  title: string;
+  imageUrl: string;
+}
+
+interface OrderInfo {
+  id: string;
+  totalAmount: number;
+  createdAt: Date;
+  user: OrderUser;
+}
+
+interface OrderItemSummary {
+  id: string;
+  price: number;
+  artistCut: number;
+  payoutStatus: "UNPAID" | "PAID";
+  artwork: ArtworkInfo;
+  order: OrderInfo;
+}
+
+interface ArtistPayout {
+  artistId: string;
+  artistName: string | null;
+  artistEmail: string | null;
+  payoutMethod: string;
+  payoutAccount: string;
+  accountHolderName: string;
+  unpaidItems: OrderItemSummary[];
+  totalUnpaidAmount: number;
+}
 
 export async function GET() {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return new NextResponse("Unauthorized", { status: 401 });
+  }
+
   try {
-    // Find all unpaid order items
     const unpaidItems = await prisma.orderItem.findMany({
-      where: { artistGetPaid: "UNPAID" },
+      where: {
+        artistGetPaid: "UNPAID",
+      },
       include: {
-        artwork: true,
-        order: {
-          include: {
-            user: true,
+        artwork: {
+          select: {
+            id: true,
+            title: true,
+            imageUrl: true,
           },
         },
-        user: true,
+        order: {
+          select: {
+            id: true,
+            totalAmount: true,
+            createdAt: true,
+            user: {
+              select: {
+                name: true,
+                email: true,
+              },
+            },
+          },
+        },
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            payoutMethod: true,
+            payoutAccount: true,
+            AccountHolderName: true,
+            role: true,
+          },
+        },
       },
     });
 
-    // Group by artist
-    const groupedByArtist: Record<string, any> = {};
+    const payoutsByArtist: Record<string, ArtistPayout> = {};
 
     for (const item of unpaidItems) {
-      const artistId = item.artistId;
-      if (!groupedByArtist[artistId]) {
-        groupedByArtist[artistId] = {
+      const artist = item.user;
+      if (artist.role !== "ARTIST") continue;
+
+      const artistId = artist.id;
+
+      if (!payoutsByArtist[artistId]) {
+        payoutsByArtist[artistId] = {
           artistId,
-          artistName: item.user.name || "Unknown",
-          artistEmail: item.user.email || "",
-          payoutMethod: item.user.payoutMethod || "N/A",
-          payoutAccount: item.user.payoutAccount || "N/A",
-          accountHolderName: item.user.AccountHolderName || "N/A",
+          artistName: artist.name ?? "Unknown",
+          artistEmail: artist.email ?? "Unknown",
+          payoutMethod: artist.payoutMethod ?? "N/A",
+          payoutAccount: artist.payoutAccount ?? "N/A",
+          accountHolderName: artist.AccountHolderName ?? "N/A",
           unpaidItems: [],
           totalUnpaidAmount: 0,
         };
       }
 
-      groupedByArtist[artistId].unpaidItems.push({
+      payoutsByArtist[artistId].unpaidItems.push({
         id: item.id,
         price: item.price,
         artistCut: item.artistCut,
         payoutStatus: item.artistGetPaid,
-        artwork: {
-          id: item.artwork.id,
-          title: item.artwork.title,
-          imageUrl: item.artwork.imageUrl,
-        },
+        artwork: item.artwork,
         order: {
           id: item.order.id,
           totalAmount: item.order.totalAmount,
           createdAt: item.order.createdAt,
-          user: {
-            name: item.order.user.name || "Unknown",
-            email: item.order.user.email || "",
-          },
+          user: item.order.user,
         },
       });
 
-      groupedByArtist[artistId].totalUnpaidAmount += item.artistCut;
+      payoutsByArtist[artistId].totalUnpaidAmount += item.artistCut;
     }
 
-    return NextResponse.json(Object.values(groupedByArtist));
+    const payoutArray = Object.values(payoutsByArtist);
+
+    return NextResponse.json(payoutArray);
   } catch (error) {
-    console.error("Error fetching payouts:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch payouts" },
-      { status: 500 }
-    );
+    console.error("Error fetching artist payouts:", error);
+    return new NextResponse("Internal Server Error", { status: 500 });
   }
 }

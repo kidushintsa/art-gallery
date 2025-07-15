@@ -147,7 +147,7 @@ export default function ArtistDashboard() {
 
   const currentStats = {
     totalArtworks: artworks.length,
-    totalSold: artworks.filter((a) => a.sold).length,
+    totalSold: salesHistory.length, // ✅ use actual sales history
     pendingApproval: artworks.filter((a) => a.status === "PENDING").length,
     approved: artworks.filter((a) => a.status === "APPROVED").length,
     totalEarnings: salesHistory.reduce((sum, sale) => sum + sale.artistCut, 0),

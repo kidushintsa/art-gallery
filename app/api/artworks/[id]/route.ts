@@ -4,16 +4,13 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]/route";
 import { prisma } from "@/prisma/client";
 
-export async function PATCH(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function PATCH(req: Request, context: { params: { id: string } }) {
   const session = await getServerSession(authOptions);
   if (!session || !session.user?.email) {
     return new NextResponse("Unauthorized", { status: 401 });
   }
 
-  const { id } = params;
+  const { id } = context.params;
   const body = await req.json();
 
   try {
@@ -33,19 +30,18 @@ export async function PATCH(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   const session = await getServerSession(authOptions);
-
   if (!session || !session.user?.email) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  const { id } = context.params;
+
   try {
     const deleted = await prisma.artwork.delete({
-      where: {
-        id: params.id,
-      },
+      where: { id },
     });
 
     return NextResponse.json(deleted);
