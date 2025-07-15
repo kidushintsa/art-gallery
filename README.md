@@ -1,13 +1,3 @@
-## --------- quick guide FOR Mr WORKU WENDEMU-------- to check out the project 👇🏾
-
-## after opening the folder change the directory to art-gallery folder, to do that run "npm run dev" for more check the "getting started" section below here
-
-## under custom-components there are two folders these folders contain UI components related to there respective labeled name eg:- user/xyc.tsx, abc.tsx are components related to user UI and each are reusable components
-
-## under app, about and home are route pages to navigate to different pages of the system eg:-> http://localhost:3000/home , http://localhost:3000/about
-
-## for more 👇🏾
-
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
