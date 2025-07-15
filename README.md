@@ -1,6 +1,6 @@
 # 🎨 Art Gallery Website
 
-A modern, responsive website for showcasing artwork, exhibitions, and artist profiles. Built to provide a clean and immersive experience for visitors who appreciate visual arts.
+A modern, responsive website for showcasing artworks. Built to provide a clean and immersive experience for visitors who appreciate visual arts.
 
 ---
 
@@ -20,24 +20,10 @@ A modern, responsive website for showcasing artwork, exhibitions, and artist pro
 
 | Frontend | Backend (if any) | Other Tools |
 |----------|------------------|-------------|
-| HTML5    | Node.js / Express (optional) | Git & GitHub |
-| CSS3 / Tailwind / Bootstrap | MongoDB / Firebase (optional) | VS Code |
-| JavaScript | API integrations (optional) | Figma (for design) |
+| Next js| next js | Git & GitHub |
+| Tailwind / Bootstrap | mysql| VS Code |
+| JavaScript | API integrations(chapa for payment | Figma (for design) |
 
----
-
-## 🧰 Installation
-
-To run locally:
-
-```bash
-git clone https://github.com/yourusername/art-gallery-site.git
-cd art-gallery-site
-# If it's a frontend-only site
-open index.html
-# Or if using a local server
-npm install
-npm start
 
 
 
